@@ -4,6 +4,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import software.bernie.geckolib.GeckoLib;
 
 @Mod(XqwkeBurenochekPrisonMod.MODID)
 public class XqwkeBurenochekPrisonMod {
@@ -12,5 +13,7 @@ public class XqwkeBurenochekPrisonMod {
     public XqwkeBurenochekPrisonMod(FMLJavaModLoadingContext context) {
         MinecraftForge.EVENT_BUS.register(this);
         context.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+
+        GeckoLib.initialize();
     }
 }
