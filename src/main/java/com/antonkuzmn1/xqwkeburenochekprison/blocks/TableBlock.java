@@ -2,6 +2,7 @@ package com.antonkuzmn1.xqwkeburenochekprison.blocks;
 
 import com.antonkuzmn1.xqwkeburenochekprison.blockentities.TableBlockEntity;
 import com.antonkuzmn1.xqwkeburenochekprison.registry.ModBlocks;
+import com.antonkuzmn1.xqwkeburenochekprison.utils.VoxelShapeUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;
@@ -61,9 +62,9 @@ public class TableBlock extends Block implements EntityBlock, SimpleWaterloggedB
 
     static {
         SHAPES.put(Direction.NORTH, SHAPE_NORTH);
-        SHAPES.put(Direction.EAST, rotateShape(Direction.NORTH, Direction.EAST, SHAPE_NORTH));
-        SHAPES.put(Direction.SOUTH, rotateShape(Direction.NORTH, Direction.SOUTH, SHAPE_NORTH));
-        SHAPES.put(Direction.WEST, rotateShape(Direction.NORTH, Direction.WEST, SHAPE_NORTH));
+        SHAPES.put(Direction.EAST, VoxelShapeUtils.rotate(Direction.NORTH, Direction.EAST, SHAPE_NORTH));
+        SHAPES.put(Direction.SOUTH, VoxelShapeUtils.rotate(Direction.NORTH, Direction.SOUTH, SHAPE_NORTH));
+        SHAPES.put(Direction.WEST, VoxelShapeUtils.rotate(Direction.NORTH, Direction.WEST, SHAPE_NORTH));
     }
 
     public TableBlock() {
@@ -246,27 +247,4 @@ public class TableBlock extends Block implements EntityBlock, SimpleWaterloggedB
                 ? Fluids.WATER.getSource(false)
                 : super.getFluidState(state);
     }
-
-    @SuppressWarnings("SameParameterValue")
-    public static VoxelShape rotateShape(Direction from, Direction to, VoxelShape shape) {
-        VoxelShape[] buffer = new VoxelShape[]{shape, Shapes.empty()};
-
-        int times = (to.get2DDataValue() - from.get2DDataValue() + 4) % 4;
-        for (int i = 0; i < times; i++) {
-            buffer[1] = Shapes.empty();
-            buffer[0].forAllBoxes((
-                    minX, minY, minZ,
-                    maxX, maxY, maxZ
-            ) -> buffer[1] = Shapes.or(
-                    buffer[1],
-                    Shapes.box(
-                            1 - maxZ, minY, minX,
-                            1 - minZ, maxY, maxX
-                    )
-            ));
-            buffer[0] = buffer[1];
-        }
-        return buffer[0];
-    }
-
 }
