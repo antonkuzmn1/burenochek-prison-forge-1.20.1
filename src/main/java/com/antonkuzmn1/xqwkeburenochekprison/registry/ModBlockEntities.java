@@ -2,6 +2,7 @@ package com.antonkuzmn1.xqwkeburenochekprison.registry;
 
 import com.antonkuzmn1.xqwkeburenochekprison.XqwkeBurenochekPrisonMod;
 import com.antonkuzmn1.xqwkeburenochekprison.blockentities.ParashaBlockEntity;
+import com.antonkuzmn1.xqwkeburenochekprison.blockentities.TableBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -18,6 +19,14 @@ public class ModBlockEntities {
             () -> BlockEntityType.Builder.of(
                     ParashaBlockEntity::new,
                     ModBlocks.PARASHA.get()
+            ).build(null)
+    );
+
+    public static final RegistryObject<BlockEntityType<TableBlockEntity>> TABLE = BLOCK_ENTITIES.register(
+            "table",
+            () -> BlockEntityType.Builder.of(
+                    TableBlockEntity::new,
+                    ModBlocks.TABLE.get()
             ).build(null)
     );
 }

@@ -1,5 +1,7 @@
 {
   "itemGroup.xqwkeburenochekprison": "[xqwke] Burenochek Prison",
   "item.xqwkeburenochekprison.parasha": "Параша",
-  "block.xqwkeburenochekprison.parasha": "Параша"
+  "block.xqwkeburenochekprison.parasha": "Параша",
+  "item.xqwkeburenochekprison.table": "Стол",
+  "block.xqwkeburenochekprison.table": "Стол"
 }

@@ -20,6 +20,7 @@ public class ModCreativeTabs {
                     .icon(() -> ModItems.PARASHA.get().getDefaultInstance())
                     .displayItems((parameters, output) -> {
                         output.accept(ModItems.PARASHA.get());
+                        output.accept(ModItems.TABLE.get());
                     })
                     .build()
     );

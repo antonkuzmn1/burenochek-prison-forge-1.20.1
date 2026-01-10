@@ -2,6 +2,7 @@ package com.antonkuzmn1.xqwkeburenochekprison.client;
 
 import com.antonkuzmn1.xqwkeburenochekprison.XqwkeBurenochekPrisonMod;
 import com.antonkuzmn1.xqwkeburenochekprison.client.renderers.ParashaBlockRenderer;
+import com.antonkuzmn1.xqwkeburenochekprison.client.renderers.TableBlockRenderer;
 import com.antonkuzmn1.xqwkeburenochekprison.registry.ModBlockEntities;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -20,6 +21,10 @@ public class ClientModEvents {
         event.registerBlockEntityRenderer(
                 ModBlockEntities.PARASHA.get(),
                 ctx -> new ParashaBlockRenderer()
+        );
+        event.registerBlockEntityRenderer(
+                ModBlockEntities.TABLE.get(),
+                ctx -> new TableBlockRenderer()
         );
     }
 

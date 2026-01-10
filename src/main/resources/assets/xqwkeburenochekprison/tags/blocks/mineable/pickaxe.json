@@ -3,6 +3,10 @@
   "values": [
     "xqwkeburenochekprison:parasha",
     "xqwkeburenochekprison:parasha_rim_ghost",
-    "xqwkeburenochekprison:parasha_cistern_ghost"
+    "xqwkeburenochekprison:parasha_cistern_ghost",
+    "xqwkeburenochekprison:table",
+    "xqwkeburenochekprison:table_behind_ghost",
+    "xqwkeburenochekprison:table_right_ghost",
+    "xqwkeburenochekprison:table_behind_right_ghost"
   ]
 }
