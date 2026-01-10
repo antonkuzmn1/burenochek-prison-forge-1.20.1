@@ -140,8 +140,8 @@ public class TableBlock extends Block implements EntityBlock, SimpleWaterloggedB
         Direction facing = ctx.getHorizontalDirection().getOpposite();
 
         BlockPos bPos = pos.relative(facing.getOpposite());
-        BlockPos rPos = pos.relative(facing.getClockWise());
-        BlockPos brPos = bPos.relative(facing.getClockWise());
+        BlockPos rPos = pos.relative(facing.getCounterClockWise());
+        BlockPos brPos = bPos.relative(facing.getCounterClockWise());
 
         if (!level.getBlockState(bPos).isAir()) {
             if (level.getBlockState(bPos).canBeReplaced(ctx)) {
