@@ -1,7 +1,13 @@
 package com.antonkuzmn1.xqwkeburenochekprison.registry;
 
 import com.antonkuzmn1.xqwkeburenochekprison.XqwkeBurenochekPrisonMod;
-import com.antonkuzmn1.xqwkeburenochekprison.blocks.*;
+import com.antonkuzmn1.xqwkeburenochekprison.blocks.parasha.ParashaBlock;
+import com.antonkuzmn1.xqwkeburenochekprison.blocks.parasha.ParashaCisternGhostBlock;
+import com.antonkuzmn1.xqwkeburenochekprison.blocks.parasha.ParashaRimGhostBlock;
+import com.antonkuzmn1.xqwkeburenochekprison.blocks.table.TableBehindGhostBlock;
+import com.antonkuzmn1.xqwkeburenochekprison.blocks.table.TableBehindRightGhostBlock;
+import com.antonkuzmn1.xqwkeburenochekprison.blocks.table.TableBlock;
+import com.antonkuzmn1.xqwkeburenochekprison.blocks.table.TableRightGhostBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;

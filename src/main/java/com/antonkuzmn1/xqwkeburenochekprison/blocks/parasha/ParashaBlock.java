@@ -1,4 +1,4 @@
-package com.antonkuzmn1.xqwkeburenochekprison.blocks;
+package com.antonkuzmn1.xqwkeburenochekprison.blocks.parasha;
 
 import com.antonkuzmn1.xqwkeburenochekprison.blockentities.ParashaBlockEntity;
 import com.antonkuzmn1.xqwkeburenochekprison.registry.ModBlocks;
@@ -26,7 +26,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
-import java.awt.*;
 import java.util.EnumMap;
 import java.util.Map;
 

@@ -1,12 +1,11 @@
-package com.antonkuzmn1.xqwkeburenochekprison.blocks;
+package com.antonkuzmn1.xqwkeburenochekprison.blocks.parasha;
 
 import net.minecraft.util.StringRepresentable;
 import org.jetbrains.annotations.NotNull;
 
-public enum TableBlockPart implements StringRepresentable {
-    BEHIND,
-    RIGHT,
-    BEHIND_RIGHT;
+public enum ParashaBlockPart implements StringRepresentable {
+    FRONT,
+    TOP;
 
     @Override
     public @NotNull String getSerializedName() {

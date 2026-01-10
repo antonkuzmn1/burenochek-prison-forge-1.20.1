@@ -1,4 +1,4 @@
-package com.antonkuzmn1.xqwkeburenochekprison.blocks;
+package com.antonkuzmn1.xqwkeburenochekprison.blocks.table;
 
 import com.antonkuzmn1.xqwkeburenochekprison.blockentities.TableBlockEntity;
 import com.antonkuzmn1.xqwkeburenochekprison.registry.ModBlocks;

@@ -1,6 +1,7 @@
-package com.antonkuzmn1.xqwkeburenochekprison.blocks;
+package com.antonkuzmn1.xqwkeburenochekprison.blocks.parasha;
 
 import com.antonkuzmn1.xqwkeburenochekprison.registry.ModBlocks;
+import com.antonkuzmn1.xqwkeburenochekprison.utils.VoxelShapeUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
@@ -27,17 +28,18 @@ import java.util.EnumMap;
 import java.util.Map;
 
 @SuppressWarnings("deprecation")
-public class TableGhostBlock extends Block implements SimpleWaterloggedBlock {
+public class ParashaGhostBlock extends Block implements SimpleWaterloggedBlock {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
-    public static final EnumProperty<TableBlockPart> PART = EnumProperty.create("part", TableBlockPart.class);
+    public static final EnumProperty<ParashaBlockPart> PART = EnumProperty.create("part", ParashaBlockPart.class);
 
     protected final Map<Direction, VoxelShape> shapes = new EnumMap<>(Direction.class);
 
-    public TableGhostBlock(TableBlockPart part, VoxelShape shapeNorth) {
+    public ParashaGhostBlock(ParashaBlockPart part, VoxelShape shapeNorth) {
         super(Properties.of()
-                        .strength(2.0f, 6.0f)
-                        .noOcclusion()
+                .strength(2.0f, 6.0f)
+//                .requiresCorrectToolForDrops()
+                .noOcclusion()
         );
 
         this.registerDefaultState(this.stateDefinition.any()
@@ -47,9 +49,9 @@ public class TableGhostBlock extends Block implements SimpleWaterloggedBlock {
         );
 
         shapes.put(Direction.NORTH, shapeNorth);
-        shapes.put(Direction.EAST, ParashaBlock.rotateShape(Direction.NORTH, Direction.EAST, shapeNorth));
-        shapes.put(Direction.SOUTH, ParashaBlock.rotateShape(Direction.NORTH, Direction.SOUTH, shapeNorth));
-        shapes.put(Direction.WEST, ParashaBlock.rotateShape(Direction.NORTH, Direction.WEST, shapeNorth));
+        shapes.put(Direction.EAST, VoxelShapeUtils.rotate(Direction.NORTH, Direction.EAST, shapeNorth));
+        shapes.put(Direction.SOUTH, VoxelShapeUtils.rotate(Direction.NORTH, Direction.SOUTH, shapeNorth));
+        shapes.put(Direction.WEST, VoxelShapeUtils.rotate(Direction.NORTH, Direction.WEST, shapeNorth));
     }
 
     @Override
@@ -70,33 +72,21 @@ public class TableGhostBlock extends Block implements SimpleWaterloggedBlock {
             @NotNull CollisionContext context
     ) {
         Direction facing = state.getValue(FACING);
-        int facingX = facing.getStepX();
-        int facingZ = facing.getStepZ();
-        Direction facingCW = facing.getClockWise();
-        int facingCWX = facingCW.getStepX();
-        int facingCWZ = facingCW.getStepZ();
-        TableBlockPart part = state.getValue(PART);
+        ParashaBlockPart part = state.getValue(PART);
 
-        VoxelShape baseShape = TableBlock.SHAPES.get(facing);
-        VoxelShape behindShape = ModBlocks.TABLE_BEHIND_GHOST.get().getShapeForFacing(facing);
-        VoxelShape rightShape = ModBlocks.TABLE_RIGHT_GHOST.get().getShapeForFacing(facing);
-        VoxelShape behindRightShape = ModBlocks.TABLE_BEHIND_RIGHT_GHOST.get().getShapeForFacing(facing);
+        VoxelShape baseShape = ParashaBlock.SHAPES.get(facing);
+        VoxelShape rimShape = ModBlocks.PARASHA_RIM_GHOST.get().getShapeForFacing(facing);
+        VoxelShape cisternShape = ModBlocks.PARASHA_CISTERN_GHOST.get().getShapeForFacing(facing);
 
-        if (part == TableBlockPart.BEHIND) {
-            baseShape = baseShape.move(facingX, 0, facingZ);
-            rightShape = rightShape.move(facingX - facingCWX, 0, facingZ - facingCWZ);
-            behindRightShape = behindRightShape.move(-facingCWX, 0, -facingCWZ);
-        } else if (part == TableBlockPart.BEHIND_RIGHT) {
-            baseShape = baseShape.move(facingX + facingCWX, 0, facingZ + facingCWZ);
-            behindShape = behindShape.move(facingCWX, 0, facingCWZ);
-            rightShape = rightShape.move(facingX, 0, facingZ);
+        if (part == ParashaBlockPart.TOP) {
+            baseShape = baseShape.move(0, -1, 0);
+            rimShape = rimShape.move(facing.getStepX(), -1, facing.getStepZ());
         } else {
-            baseShape = baseShape.move(facingCWX, 0, facingCWZ);
-            behindShape = behindShape.move(-facingX + facingCWX, 0, -facingZ + facingCWZ);
-            behindRightShape = behindRightShape.move(-facingX, 0, -facingZ);
+            baseShape = baseShape.move(-facing.getStepX(), 0, -facing.getStepZ());
+            cisternShape = cisternShape.move(-facing.getStepX(), 1, -facing.getStepZ());
         }
 
-        return Shapes.or(baseShape, behindShape, rightShape, behindRightShape);
+        return Shapes.or(baseShape, rimShape, cisternShape);
     }
 
     @Override
@@ -126,13 +116,11 @@ public class TableGhostBlock extends Block implements SimpleWaterloggedBlock {
         if (level.isClientSide) return;
 
         Direction facing = state.getValue(FACING);
-        Direction left = facing.getClockWise();
+        ParashaBlockPart part = state.getValue(PART);
 
-        TableBlockPart part = state.getValue(PART);
         BlockPos basePos = switch (part) {
-            case BEHIND -> pos.relative(facing);
-            case RIGHT -> pos.relative(left);
-            case BEHIND_RIGHT -> pos.relative(facing).relative(left);
+            case FRONT -> pos.relative(facing.getOpposite());
+            case TOP -> pos.below();
         };
 
         level.destroyBlock(basePos, true);
