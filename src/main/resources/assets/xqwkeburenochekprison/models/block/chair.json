@@ -1,0 +1,6 @@
+{
+  "parent": "xqwkeburenochekprison:block/chair",
+  "textures": {
+    "particle": "xqwkeburenochekprison:block/chair"
+  }
+}

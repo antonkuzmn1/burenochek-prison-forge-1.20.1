@@ -1,6 +1,7 @@
 package com.antonkuzmn1.xqwkeburenochekprison.registry;
 
 import com.antonkuzmn1.xqwkeburenochekprison.XqwkeBurenochekPrisonMod;
+import com.antonkuzmn1.xqwkeburenochekprison.blockentities.ChairBlockEntity;
 import com.antonkuzmn1.xqwkeburenochekprison.blockentities.ParashaBlockEntity;
 import com.antonkuzmn1.xqwkeburenochekprison.blockentities.TableBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -27,6 +28,14 @@ public class ModBlockEntities {
             () -> BlockEntityType.Builder.of(
                     TableBlockEntity::new,
                     ModBlocks.TABLE.get()
+            ).build(null)
+    );
+
+    public static final RegistryObject<BlockEntityType<ChairBlockEntity>> CHAIR = BLOCK_ENTITIES.register(
+            "chair",
+            () -> BlockEntityType.Builder.of(
+                    ChairBlockEntity::new,
+                    ModBlocks.CHAIR.get()
             ).build(null)
     );
 }

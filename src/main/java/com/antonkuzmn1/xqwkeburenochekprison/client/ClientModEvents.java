@@ -1,6 +1,7 @@
 package com.antonkuzmn1.xqwkeburenochekprison.client;
 
 import com.antonkuzmn1.xqwkeburenochekprison.XqwkeBurenochekPrisonMod;
+import com.antonkuzmn1.xqwkeburenochekprison.client.renderers.ChairBlockRenderer;
 import com.antonkuzmn1.xqwkeburenochekprison.client.renderers.ParashaBlockRenderer;
 import com.antonkuzmn1.xqwkeburenochekprison.client.renderers.TableBlockRenderer;
 import com.antonkuzmn1.xqwkeburenochekprison.registry.ModBlockEntities;
@@ -25,6 +26,10 @@ public class ClientModEvents {
         event.registerBlockEntityRenderer(
                 ModBlockEntities.TABLE.get(),
                 ctx -> new TableBlockRenderer()
+        );
+        event.registerBlockEntityRenderer(
+                ModBlockEntities.CHAIR.get(),
+                ctx -> new ChairBlockRenderer()
         );
     }
 

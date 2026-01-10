@@ -21,6 +21,7 @@ public class ModCreativeTabs {
                     .displayItems((parameters, output) -> {
                         output.accept(ModItems.PARASHA.get());
                         output.accept(ModItems.TABLE.get());
+                        output.accept(ModItems.CHAIR.get());
                     })
                     .build()
     );

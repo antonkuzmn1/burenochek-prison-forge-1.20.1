@@ -1,6 +1,7 @@
 package com.antonkuzmn1.xqwkeburenochekprison.registry;
 
 import com.antonkuzmn1.xqwkeburenochekprison.XqwkeBurenochekPrisonMod;
+import com.antonkuzmn1.xqwkeburenochekprison.blocks.chair.ChairBlock;
 import com.antonkuzmn1.xqwkeburenochekprison.blocks.parasha.ParashaBlock;
 import com.antonkuzmn1.xqwkeburenochekprison.blocks.parasha.ParashaCisternGhostBlock;
 import com.antonkuzmn1.xqwkeburenochekprison.blocks.parasha.ParashaRimGhostBlock;
@@ -52,5 +53,10 @@ public class ModBlocks {
     public static final RegistryObject<TableBehindRightGhostBlock> TABLE_BEHIND_RIGHT_GHOST = BLOCKS.register(
             "table_behind_right_ghost",
             TableBehindRightGhostBlock::new
+    );
+
+    public static final RegistryObject<ChairBlock> CHAIR = BLOCKS.register(
+            "chair",
+            ChairBlock::new
     );
 }

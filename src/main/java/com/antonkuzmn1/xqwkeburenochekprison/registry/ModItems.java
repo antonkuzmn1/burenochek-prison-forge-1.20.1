@@ -1,6 +1,7 @@
 package com.antonkuzmn1.xqwkeburenochekprison.registry;
 
 import com.antonkuzmn1.xqwkeburenochekprison.XqwkeBurenochekPrisonMod;
+import com.antonkuzmn1.xqwkeburenochekprison.items.ChairItem;
 import com.antonkuzmn1.xqwkeburenochekprison.items.ParashaItem;
 import com.antonkuzmn1.xqwkeburenochekprison.items.TableItem;
 import net.minecraft.world.item.Item;
@@ -22,5 +23,10 @@ public class ModItems {
     public static final RegistryObject<TableItem> TABLE = ITEMS.register(
             "table",
             TableItem::new
+    );
+
+    public static final RegistryObject<ChairItem> CHAIR = ITEMS.register(
+            "chair",
+            ChairItem::new
     );
 }
