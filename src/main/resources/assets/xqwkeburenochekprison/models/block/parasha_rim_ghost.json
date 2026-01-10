@@ -1,0 +1,6 @@
+{
+  "parent": "xqwkeburenochekprison:block/parasha_rim_ghost",
+  "textures": {
+    "particle": "xqwkeburenochekprison:block/parasha"
+  }
+}
