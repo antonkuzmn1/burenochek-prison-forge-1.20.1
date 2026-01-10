@@ -69,7 +69,6 @@ public class TableBlock extends Block implements EntityBlock, SimpleWaterloggedB
     public TableBlock() {
         super(Properties.of()
                         .strength(2.0f, 6.0f)
-//                .requiresCorrectToolForDrops()
                         .noOcclusion()
         );
         this.registerDefaultState(

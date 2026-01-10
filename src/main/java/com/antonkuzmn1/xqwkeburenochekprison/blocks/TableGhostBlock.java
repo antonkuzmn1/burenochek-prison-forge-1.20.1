@@ -37,7 +37,6 @@ public class TableGhostBlock extends Block implements SimpleWaterloggedBlock {
     public TableGhostBlock(TableBlockPart part, VoxelShape shapeNorth) {
         super(Properties.of()
                         .strength(2.0f, 6.0f)
-//                .requiresCorrectToolForDrops()
                         .noOcclusion()
         );
 
@@ -127,14 +126,13 @@ public class TableGhostBlock extends Block implements SimpleWaterloggedBlock {
         if (level.isClientSide) return;
 
         Direction facing = state.getValue(FACING);
-        Direction forward = facing.getOpposite();
-        Direction left = facing.getCounterClockWise();
+        Direction left = facing.getClockWise();
 
         TableBlockPart part = state.getValue(PART);
         BlockPos basePos = switch (part) {
-            case BEHIND -> pos.relative(forward);
+            case BEHIND -> pos.relative(facing);
             case RIGHT -> pos.relative(left);
-            case BEHIND_RIGHT -> pos.relative(forward).relative(left);
+            case BEHIND_RIGHT -> pos.relative(facing).relative(left);
         };
 
         level.destroyBlock(basePos, true);
