@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -34,21 +35,173 @@ public class PrisonDoorGhostBlock extends Block {
     public static final BooleanProperty SHUTTER = BooleanProperty.create("shutter");
 
     public static final VoxelShape SHAPE_NORTH = Shapes.or(
+            Shapes.join(
+                    Shapes.or(
+                            Shapes.box(
+                                    0 / 16f, 0 / 16f, 0 / 16f,
+                                    4 / 16f, 2 / 16f, 2 / 16f
+                            ),
+
+                            Shapes.box(
+                                    14 / 16f, 0 / 16f, 1 / 16f,
+                                    16 / 16f, 2 / 16f, 2 / 16f
+                            ),
+                            Shapes.box(
+                                    14 / 16f, 0 / 16f, 0 / 16f,
+                                    15 / 16f, 2 / 16f, 1 / 16f
+                            ),
+
+                            Shapes.box(
+                                    14 / 16f, 8 / 16f, 1 / 16f,
+                                    16 / 16f, 11 / 16f, 2 / 16f
+                            ),
+                            Shapes.box(
+                                    14 / 16f, 8 / 16f, 0 / 16f,
+                                    15 / 16f, 11 / 16f, 1 / 16f
+                            ),
+
+                            Shapes.box(
+                                    4 / 16f, 7 / 16f, 0 / 16f,
+                                    12 / 16f, 11 / 16f, 1 / 16f
+                            ),
+
+                            Shapes.box(
+                                    2 / 16f, 0 / 16f, 1 / 16f,
+                                    14 / 16f, 14 / 16f, 5 / 16f
+                            ),
+                            Shapes.box(
+                                    0 / 16f, 0 / 16f, 2 / 16f,
+                                    2 / 16f, 13 / 16f, 4 / 16f
+                            ),
+                            Shapes.box(
+                                    14 / 16f, 0 / 16f, 2 / 16f,
+                                    16 / 16f, 13 / 16f, 4 / 16f
+                            ),
+
+                            Shapes.box(
+                                    0 / 16f, 13 / 16f, 0 / 16f,
+                                    3 / 16f, 14 / 16f, 6 / 16f
+                            ),
+                            Shapes.box(
+                                    13 / 16f, 13 / 16f, 0 / 16f,
+                                    16 / 16f, 14 / 16f, 6 / 16f
+                            ),
+
+                            Shapes.box(
+                                    0 / 16f, 14 / 16f, 0 / 16f,
+                                    16 / 16f, 16 / 16f, 6 / 16f
+                            )
+                    ),
+                    Shapes.box(
+                            5 / 16f, 8 / 16f, 0 / 16f,
+                            11 / 16f, 10 / 16f, 5 / 16f
+                    ),
+                    BooleanOp.ONLY_FIRST
+            ),
             Shapes.box(
-                    0 / 16f, 0 / 16f, 0 / 16f,
-                    16 / 16f, 16 / 16f, 6 / 16f
+                    6 / 16f, 8 / 16f, 1 / 16f,
+                    7 / 16f, 10 / 16f, 4 / 16f
+            ),
+            Shapes.box(
+                    9 / 16f, 8 / 16f, 1 / 16f,
+                    10 / 16f, 10 / 16f, 4 / 16f
+            )
+    );
+
+    public static final VoxelShape SHAPE_NORTH_WITH_SHUTTER = Shapes.or(
+            SHAPE_NORTH,
+            Shapes.box(
+                    5 / 16f, 8 / 16f, 0 / 16f,
+                    11 / 16f, 10 / 16f, 1 / 16f
             )
     );
 
     private static final VoxelShape SHAPE_NORTH_OPENED = Shapes.or(
+            Shapes.join(
+                    Shapes.or(
+                            Shapes.box(
+                                    10 / 16f, 0 / 16f, 12 / 16f,
+                                    12 / 16f, 2 / 16f, 16 / 16f
+                            ),
+
+                            Shapes.box(
+                                    11 / 16f, 0 / 16f, 0 / 16f,
+                                    12 / 16f, 2 / 16f, 2 / 16f
+                            ),
+                            Shapes.box(
+                                    10 / 16f, 0 / 16f, 1 / 16f,
+                                    11 / 16f, 2 / 16f, 2 / 16f
+                            ),
+
+                            Shapes.box(
+                                    11 / 16f, 8 / 16f, 0 / 16f,
+                                    12 / 16f, 11 / 16f, 2 / 16f
+                            ),
+                            Shapes.box(
+                                    10 / 16f, 8 / 16f, 1 / 16f,
+                                    11 / 16f, 11 / 16f, 2 / 16f
+                            ),
+
+                            Shapes.box(
+                                    10 / 16f, 7 / 16f, 4 / 16f,
+                                    11 / 16f, 11 / 16f, 12 / 16f
+                            ),
+
+                            Shapes.box(
+                                    11 / 16f, 0 / 16f, 2 / 16f,
+                                    15 / 16f, 14 / 16f, 14 / 16f
+                            ),
+                            Shapes.box(
+                                    12 / 16f, 0 / 16f, 14 / 16f,
+                                    14 / 16f, 13 / 16f, 16 / 16f
+                            ),
+                            Shapes.box(
+                                    12 / 16f, 0 / 16f, 0 / 16f,
+                                    14 / 16f, 13 / 16f, 2 / 16f
+                            ),
+
+                            Shapes.box(
+                                    10 / 16f, 13 / 16f, 13 / 16f,
+                                    16 / 16f, 14 / 16f, 16 / 16f
+                            ),
+                            Shapes.box(
+                                    10 / 16f, 13 / 16f, 0 / 16f,
+                                    16 / 16f, 14 / 16f, 3 / 16f
+                            ),
+
+                            Shapes.box(
+                                    10 / 16f, 14 / 16f, 0 / 16f,
+                                    16 / 16f, 16 / 16f, 16 / 16f
+                            )
+                    ),
+                    Shapes.box(
+                            10 / 16f, 8 / 16f, 5 / 16f,
+                            15 / 16f, 10 / 16f, 11 / 16f
+                    ),
+                    BooleanOp.ONLY_FIRST
+            ),
             Shapes.box(
-                    10 / 16f, 0 / 16f, 0 / 16f,
-                    16 / 16f, 16 / 16f, 16 / 16f
+                    11 / 16f, 8 / 16f, 9 / 16f,
+                    14 / 16f, 10 / 16f, 10 / 16f
+            ),
+            Shapes.box(
+                    11 / 16f, 8 / 16f, 6 / 16f,
+                    14 / 16f, 10 / 16f, 7 / 16f
+            )
+    );
+
+    private static final VoxelShape SHAPE_NORTH_OPENED_WITH_SHUTTER = Shapes.or(
+            SHAPE_NORTH_OPENED,
+            Shapes.box(
+                    10 / 16f, 8 / 16f, 5 / 16f,
+                    11 / 16f, 10 / 16f, 11 / 16f
             )
     );
 
     protected final Map<Direction, VoxelShape> SHAPES = new EnumMap<>(Direction.class);
+    protected final Map<Direction, VoxelShape> SHAPES_WITH_SHUTTER = new EnumMap<>(Direction.class);
     public static final Map<Direction, VoxelShape> SHAPES_OPENED = new EnumMap<>(Direction.class);
+    public static final Map<Direction, VoxelShape> SHAPES_OPENED_WITH_SHUTTER = new EnumMap<>(Direction.class);
 
     public PrisonDoorGhostBlock() {
         super(Properties.of()
@@ -62,25 +215,10 @@ public class PrisonDoorGhostBlock extends Block {
                 .setValue(SHUTTER, false)
         );
 
-        SHAPES.put(Direction.NORTH, SHAPE_NORTH);
-        SHAPES.put(Direction.EAST, VoxelShapeUtils.rotate(Direction.NORTH, Direction.EAST, SHAPE_NORTH));
-        SHAPES.put(Direction.SOUTH, VoxelShapeUtils.rotate(Direction.NORTH, Direction.SOUTH, SHAPE_NORTH));
-        SHAPES.put(Direction.WEST, VoxelShapeUtils.rotate(Direction.NORTH, Direction.WEST, SHAPE_NORTH));
-
-        SHAPES_OPENED.put(Direction.NORTH, SHAPE_NORTH_OPENED);
-        SHAPES_OPENED.put(
-                Direction.EAST,
-                VoxelShapeUtils.rotate(Direction.NORTH, Direction.EAST, SHAPE_NORTH_OPENED)
-        );
-        SHAPES_OPENED.put(
-                Direction.SOUTH,
-                VoxelShapeUtils.rotate(Direction.NORTH, Direction.SOUTH, SHAPE_NORTH_OPENED)
-        );
-        SHAPES_OPENED.put(
-                Direction.WEST,
-                VoxelShapeUtils.rotate(Direction.NORTH, Direction.WEST, SHAPE_NORTH_OPENED)
-        );
-
+        VoxelShapeUtils.putAllDirections(SHAPES, SHAPE_NORTH);
+        VoxelShapeUtils.putAllDirections(SHAPES_OPENED, SHAPE_NORTH_OPENED);
+        VoxelShapeUtils.putAllDirections(SHAPES_WITH_SHUTTER, SHAPE_NORTH_WITH_SHUTTER);
+        VoxelShapeUtils.putAllDirections(SHAPES_OPENED_WITH_SHUTTER, SHAPE_NORTH_OPENED_WITH_SHUTTER);
     }
 
     @Override
@@ -103,10 +241,11 @@ public class PrisonDoorGhostBlock extends Block {
         Direction facing = state.getValue(FACING);
 
         boolean opened = state.getValue(OPENED);
+        boolean shutter = state.getValue(SHUTTER);
 
         Map<Direction, VoxelShape> baseShapes = opened ? PrisonDoorBlock.SHAPES_OPENED : PrisonDoorBlock.SHAPES;
         VoxelShape baseShape = baseShapes.get(facing).move(0, -1, 0);
-        VoxelShape ghostShape = ModBlocks.PRISON_DOOR_GHOST.get().getShapeForFacing(facing, opened);
+        VoxelShape ghostShape = ModBlocks.PRISON_DOOR_GHOST.get().getShapeForFacing(facing, opened, shutter);
 
 
         return Shapes.or(baseShape, ghostShape);
@@ -138,7 +277,7 @@ public class PrisonDoorGhostBlock extends Block {
         if (state.getBlock() == newState.getBlock()) return;
         if (level.isClientSide) return;
 
-        BlockPos basePos =  pos.below();
+        BlockPos basePos = pos.below();
 
         level.destroyBlock(basePos, true);
         super.onRemove(state, level, pos, newState, isMoving);
@@ -164,8 +303,16 @@ public class PrisonDoorGhostBlock extends Block {
         // do nothing
     }
 
-    public VoxelShape getShapeForFacing(Direction facing, boolean opened) {
-        return (opened ? SHAPES_OPENED : SHAPES).get(facing);
+    public VoxelShape getShapeForFacing(Direction facing, boolean opened, boolean shutter) {
+        Map<Direction, VoxelShape> shapes = SHAPES;
+        if (opened && shutter) {
+            shapes = SHAPES_OPENED_WITH_SHUTTER;
+        } else if (opened) {
+            shapes = SHAPES_OPENED;
+        } else if (shutter) {
+            shapes = SHAPES_WITH_SHUTTER;
+        }
+        return shapes.get(facing);
     }
 
     @Override
@@ -193,6 +340,15 @@ public class PrisonDoorGhostBlock extends Block {
     }
 
     private Map<Direction, VoxelShape> getShapes(@NotNull BlockState state) {
-        return state.getValue(OPENED) ? SHAPES_OPENED : SHAPES;
+        boolean opened = state.getValue(OPENED);
+        boolean shutter = state.getValue(SHUTTER);
+        if (opened && shutter) {
+            return SHAPES_OPENED_WITH_SHUTTER;
+        } else if (opened) {
+            return SHAPES_OPENED;
+        } else if (shutter) {
+            return SHAPES_WITH_SHUTTER;
+        }
+        return SHAPES;
     }
 }

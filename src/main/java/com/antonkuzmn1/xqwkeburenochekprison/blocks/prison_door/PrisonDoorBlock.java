@@ -42,14 +42,104 @@ public class PrisonDoorBlock extends Block implements EntityBlock {
     private static final VoxelShape SHAPE_NORTH = Shapes.or(
             Shapes.box(
                     0 / 16f, 0 / 16f, 0 / 16f,
-                    16 / 16f, 16 / 16f, 6 / 16f
+                    16 / 16f, 2 / 16f, 6 / 16f
+            ),
+
+            Shapes.box(
+                    0 / 16f, 2 / 16f, 0 / 16f,
+                    3 / 16f, 3 / 16f, 6 / 16f
+            ),
+            Shapes.box(
+                    13 / 16f, 2 / 16f, 0 / 16f,
+                    16 / 16f, 3 / 16f, 6 / 16f
+            ),
+
+            Shapes.box(
+                    2 / 16f, 2 / 16f, 1 / 16f,
+                    14 / 16f, 16 / 16f, 5 / 16f
+            ),
+            Shapes.box(
+                    0 / 16f, 3 / 16f, 2 / 16f,
+                    2 / 16f, 16 / 16f, 4 / 16f
+            ),
+            Shapes.box(
+                    14 / 16f, 3 / 16f, 2 / 16f,
+                    16 / 16f, 16 / 16f, 4 / 16f
+            ),
+
+            Shapes.box(
+                    14 / 16f, 5 / 16f, 1 / 16f,
+                    16 / 16f, 8 / 16f, 2 / 16f
+            ),
+            Shapes.box(
+                    14 / 16f, 5 / 16f, 0 / 16f,
+                    15 / 16f, 8 / 16f, 1 / 16f
+            ),
+
+            Shapes.box(
+                    14 / 16f, 15 / 16f, 1 / 16f,
+                    16 / 16f, 16 / 16f, 2 / 16f
+            ),
+            Shapes.box(
+                    14 / 16f, 15 / 16f, 0 / 16f,
+                    15 / 16f, 16 / 16f, 1 / 16f
+            ),
+
+            Shapes.box(
+                    0 / 16f, 15 / 16f, 0 / 16f,
+                    4 / 16f, 16 / 16f, 2 / 16f
             )
     );
 
     private static final VoxelShape SHAPE_NORTH_OPENED = Shapes.or(
             Shapes.box(
                     10 / 16f, 0 / 16f, 0 / 16f,
-                    16 / 16f, 16 / 16f, 16 / 16f
+                    16 / 16f, 2 / 16f, 16 / 16f
+            ),
+
+            Shapes.box(
+                    10 / 16f, 2 / 16f, 13 / 16f,
+                    16 / 16f, 3 / 16f, 16 / 16f
+            ),
+            Shapes.box(
+                    10 / 16f, 2 / 16f, 0 / 16f,
+                    16 / 16f, 3 / 16f, 3 / 16f
+            ),
+
+            Shapes.box(
+                    11 / 16f, 2 / 16f, 2 / 16f,
+                    15 / 16f, 16 / 16f, 14 / 16f
+            ),
+            Shapes.box(
+                    12 / 16f, 3 / 16f, 14 / 16f,
+                    14 / 16f, 16 / 16f, 16 / 16f
+            ),
+            Shapes.box(
+                    12 / 16f, 3 / 16f, 0 / 16f,
+                    14 / 16f, 16 / 16f, 2 / 16f
+            ),
+
+            Shapes.box(
+                    11 / 16f, 5 / 16f, 0 / 16f,
+                    12 / 16f, 8 / 16f, 2 / 16f
+            ),
+            Shapes.box(
+                    10 / 16f, 5 / 16f, 1 / 16f,
+                    11 / 16f, 8 / 16f, 2 / 16f
+            ),
+
+            Shapes.box(
+                    11 / 16f, 15 / 16f, 0 / 16f,
+                    12 / 16f, 16 / 16f, 2 / 16f
+            ),
+            Shapes.box(
+                    10 / 16f, 15 / 16f, 1 / 16f,
+                    11 / 16f, 16 / 16f, 2 / 16f
+            ),
+
+            Shapes.box(
+                    10 / 16f, 15 / 16f, 12 / 16f,
+                    12 / 16f, 16 / 16f, 16 / 16f
             )
     );
 
@@ -57,24 +147,8 @@ public class PrisonDoorBlock extends Block implements EntityBlock {
     public static final Map<Direction, VoxelShape> SHAPES_OPENED = new EnumMap<>(Direction.class);
 
     static {
-        SHAPES.put(Direction.NORTH, SHAPE_NORTH);
-        SHAPES.put(Direction.EAST, VoxelShapeUtils.rotate(Direction.NORTH, Direction.EAST, SHAPE_NORTH));
-        SHAPES.put(Direction.SOUTH, VoxelShapeUtils.rotate(Direction.NORTH, Direction.SOUTH, SHAPE_NORTH));
-        SHAPES.put(Direction.WEST, VoxelShapeUtils.rotate(Direction.NORTH, Direction.WEST, SHAPE_NORTH));
-
-        SHAPES_OPENED.put(Direction.NORTH, SHAPE_NORTH_OPENED);
-        SHAPES_OPENED.put(
-                Direction.EAST,
-                VoxelShapeUtils.rotate(Direction.NORTH, Direction.EAST, SHAPE_NORTH_OPENED)
-        );
-        SHAPES_OPENED.put(
-                Direction.SOUTH,
-                VoxelShapeUtils.rotate(Direction.NORTH, Direction.SOUTH, SHAPE_NORTH_OPENED)
-        );
-        SHAPES_OPENED.put(
-                Direction.WEST,
-                VoxelShapeUtils.rotate(Direction.NORTH, Direction.WEST, SHAPE_NORTH_OPENED)
-        );
+        VoxelShapeUtils.putAllDirections(SHAPES, SHAPE_NORTH);
+        VoxelShapeUtils.putAllDirections(SHAPES_OPENED, SHAPE_NORTH_OPENED);
     }
 
     public PrisonDoorBlock() {
@@ -108,9 +182,10 @@ public class PrisonDoorBlock extends Block implements EntityBlock {
     ) {
         Direction facing = state.getValue(FACING);
         boolean opened = state.getValue(OPENED);
+        boolean shutter = state.getValue(SHUTTER);
 
         VoxelShape baseShape = getShapes(state).get(facing);
-        VoxelShape ghostShape = ModBlocks.PRISON_DOOR_GHOST.get().getShapeForFacing(facing, opened).move(
+        VoxelShape ghostShape = ModBlocks.PRISON_DOOR_GHOST.get().getShapeForFacing(facing, opened, shutter).move(
                 0,
                 1,
                 0

@@ -55,24 +55,8 @@ public class TableGhostBlock extends Block implements SimpleWaterloggedBlock {
                 .setValue(CHAIR, false)
         );
 
-        shapes.put(Direction.NORTH, shapeNorth);
-        shapes.put(Direction.EAST, VoxelShapeUtils.rotate(Direction.NORTH, Direction.EAST, shapeNorth));
-        shapes.put(Direction.SOUTH, VoxelShapeUtils.rotate(Direction.NORTH, Direction.SOUTH, shapeNorth));
-        shapes.put(Direction.WEST, VoxelShapeUtils.rotate(Direction.NORTH, Direction.WEST, shapeNorth));
-
-        shapesWithChair.put(Direction.NORTH, shapesNorthWithChair);
-        shapesWithChair.put(
-                Direction.EAST,
-                VoxelShapeUtils.rotate(Direction.NORTH, Direction.EAST, shapesNorthWithChair)
-        );
-        shapesWithChair.put(
-                Direction.SOUTH,
-                VoxelShapeUtils.rotate(Direction.NORTH, Direction.SOUTH, shapesNorthWithChair)
-        );
-        shapesWithChair.put(
-                Direction.WEST,
-                VoxelShapeUtils.rotate(Direction.NORTH, Direction.WEST, shapesNorthWithChair)
-        );
+        VoxelShapeUtils.putAllDirections(shapes, shapeNorth);
+        VoxelShapeUtils.putAllDirections(shapesWithChair, shapesNorthWithChair);
     }
 
     public TableGhostBlock(TableBlockPart part, VoxelShape shapeNorth) {

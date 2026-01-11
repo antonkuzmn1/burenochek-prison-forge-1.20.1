@@ -48,10 +48,7 @@ public class ParashaGhostBlock extends Block implements SimpleWaterloggedBlock {
                 .setValue(WATERLOGGED, false)
         );
 
-        shapes.put(Direction.NORTH, shapeNorth);
-        shapes.put(Direction.EAST, VoxelShapeUtils.rotate(Direction.NORTH, Direction.EAST, shapeNorth));
-        shapes.put(Direction.SOUTH, VoxelShapeUtils.rotate(Direction.NORTH, Direction.SOUTH, shapeNorth));
-        shapes.put(Direction.WEST, VoxelShapeUtils.rotate(Direction.NORTH, Direction.WEST, shapeNorth));
+        VoxelShapeUtils.putAllDirections(shapes, shapeNorth);
     }
 
     @Override

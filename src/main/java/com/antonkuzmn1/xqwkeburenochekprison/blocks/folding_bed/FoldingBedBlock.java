@@ -59,24 +59,8 @@ public class FoldingBedBlock extends Block implements EntityBlock {
     public static final Map<Direction, VoxelShape> SHAPES_FOLDED = new EnumMap<>(Direction.class);
 
     static {
-        SHAPES.put(Direction.NORTH, SHAPE_NORTH);
-        SHAPES.put(Direction.EAST, VoxelShapeUtils.rotate(Direction.NORTH, Direction.EAST, SHAPE_NORTH));
-        SHAPES.put(Direction.SOUTH, VoxelShapeUtils.rotate(Direction.NORTH, Direction.SOUTH, SHAPE_NORTH));
-        SHAPES.put(Direction.WEST, VoxelShapeUtils.rotate(Direction.NORTH, Direction.WEST, SHAPE_NORTH));
-
-        SHAPES_FOLDED.put(Direction.NORTH, SHAPE_NORTH_FOLDED);
-        SHAPES_FOLDED.put(
-                Direction.EAST,
-                VoxelShapeUtils.rotate(Direction.NORTH, Direction.EAST, SHAPE_NORTH_FOLDED)
-        );
-        SHAPES_FOLDED.put(
-                Direction.SOUTH,
-                VoxelShapeUtils.rotate(Direction.NORTH, Direction.SOUTH, SHAPE_NORTH_FOLDED)
-        );
-        SHAPES_FOLDED.put(
-                Direction.WEST,
-                VoxelShapeUtils.rotate(Direction.NORTH, Direction.WEST, SHAPE_NORTH_FOLDED)
-        );
+        VoxelShapeUtils.putAllDirections(SHAPES, SHAPE_NORTH);
+        VoxelShapeUtils.putAllDirections(SHAPES_FOLDED, SHAPE_NORTH_FOLDED);
     }
 
     public FoldingBedBlock() {

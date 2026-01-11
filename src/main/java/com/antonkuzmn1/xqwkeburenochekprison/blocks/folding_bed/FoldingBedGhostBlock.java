@@ -63,24 +63,8 @@ public class FoldingBedGhostBlock extends Block {
                 .setValue(FOLDED, false)
         );
 
-        SHAPES.put(Direction.NORTH, SHAPE_NORTH);
-        SHAPES.put(Direction.EAST, VoxelShapeUtils.rotate(Direction.NORTH, Direction.EAST, SHAPE_NORTH));
-        SHAPES.put(Direction.SOUTH, VoxelShapeUtils.rotate(Direction.NORTH, Direction.SOUTH, SHAPE_NORTH));
-        SHAPES.put(Direction.WEST, VoxelShapeUtils.rotate(Direction.NORTH, Direction.WEST, SHAPE_NORTH));
-
-        SHAPES_FOLDED.put(Direction.NORTH, SHAPE_NORTH_FOLDED);
-        SHAPES_FOLDED.put(
-                Direction.EAST,
-                VoxelShapeUtils.rotate(Direction.NORTH, Direction.EAST, SHAPE_NORTH_FOLDED)
-        );
-        SHAPES_FOLDED.put(
-                Direction.SOUTH,
-                VoxelShapeUtils.rotate(Direction.NORTH, Direction.SOUTH, SHAPE_NORTH_FOLDED)
-        );
-        SHAPES_FOLDED.put(
-                Direction.WEST,
-                VoxelShapeUtils.rotate(Direction.NORTH, Direction.WEST, SHAPE_NORTH_FOLDED)
-        );
+        VoxelShapeUtils.putAllDirections(SHAPES, SHAPE_NORTH);
+        VoxelShapeUtils.putAllDirections(SHAPES_FOLDED, SHAPE_NORTH_FOLDED);
     }
 
     @Override

@@ -111,24 +111,8 @@ public class TableBlock extends Block implements EntityBlock, SimpleWaterloggedB
     public static final Map<Direction, VoxelShape> SHAPES_WITH_CHAIR = new EnumMap<>(Direction.class);
 
     static {
-        SHAPES.put(Direction.NORTH, SHAPE_NORTH);
-        SHAPES.put(Direction.EAST, VoxelShapeUtils.rotate(Direction.NORTH, Direction.EAST, SHAPE_NORTH));
-        SHAPES.put(Direction.SOUTH, VoxelShapeUtils.rotate(Direction.NORTH, Direction.SOUTH, SHAPE_NORTH));
-        SHAPES.put(Direction.WEST, VoxelShapeUtils.rotate(Direction.NORTH, Direction.WEST, SHAPE_NORTH));
-
-        SHAPES_WITH_CHAIR.put(Direction.NORTH, SHAPE_NORTH_WITH_CHAIR);
-        SHAPES_WITH_CHAIR.put(
-                Direction.EAST,
-                VoxelShapeUtils.rotate(Direction.NORTH, Direction.EAST, SHAPE_NORTH_WITH_CHAIR)
-        );
-        SHAPES_WITH_CHAIR.put(
-                Direction.SOUTH,
-                VoxelShapeUtils.rotate(Direction.NORTH, Direction.SOUTH, SHAPE_NORTH_WITH_CHAIR)
-        );
-        SHAPES_WITH_CHAIR.put(
-                Direction.WEST,
-                VoxelShapeUtils.rotate(Direction.NORTH, Direction.WEST, SHAPE_NORTH_WITH_CHAIR)
-        );
+        VoxelShapeUtils.putAllDirections(SHAPES, SHAPE_NORTH);
+        VoxelShapeUtils.putAllDirections(SHAPES_WITH_CHAIR, SHAPE_NORTH_WITH_CHAIR);
     }
 
     public TableBlock() {

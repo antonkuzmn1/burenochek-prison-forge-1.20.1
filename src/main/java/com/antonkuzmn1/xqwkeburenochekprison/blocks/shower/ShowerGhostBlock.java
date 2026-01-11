@@ -45,10 +45,7 @@ public class ShowerGhostBlock extends Block {
                 .setValue(FACING, Direction.NORTH)
         );
 
-        SHAPES.put(Direction.NORTH, SHAPE_NORTH);
-        SHAPES.put(Direction.EAST, VoxelShapeUtils.rotate(Direction.NORTH, Direction.EAST, SHAPE_NORTH));
-        SHAPES.put(Direction.SOUTH, VoxelShapeUtils.rotate(Direction.NORTH, Direction.SOUTH, SHAPE_NORTH));
-        SHAPES.put(Direction.WEST, VoxelShapeUtils.rotate(Direction.NORTH, Direction.WEST, SHAPE_NORTH));
+        VoxelShapeUtils.putAllDirections(SHAPES, SHAPE_NORTH);
     }
 
     @Override
