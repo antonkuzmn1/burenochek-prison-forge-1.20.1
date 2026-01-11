@@ -12,7 +12,8 @@ public class ParashaBlockModel extends GeoModel<ParashaBlockEntity> {
 
     @Override
     public ResourceLocation getTextureResource(ParashaBlockEntity animatable) {
-        return ResourceLocation.tryParse("xqwkeburenochekprison:textures/block/parasha.png");
+//        return ResourceLocation.tryParse("xqwkeburenochekprison:textures/block/parasha.png");
+        return ParashaBlockEntity.getCurrentFrameTexture(animatable.getBlockPos());
     }
 
     @Override
