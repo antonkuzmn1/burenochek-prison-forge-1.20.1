@@ -1,0 +1,6 @@
+{
+  "parent": "xqwkeburenochekprison:block/prison_lamp",
+  "textures": {
+    "particle": "xqwkeburenochekprison:block/prison_lamp"
+  }
+}

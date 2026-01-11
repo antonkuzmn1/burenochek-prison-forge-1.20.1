@@ -9,6 +9,7 @@ import com.antonkuzmn1.xqwkeburenochekprison.blocks.parasha.ParashaCisternGhostB
 import com.antonkuzmn1.xqwkeburenochekprison.blocks.parasha.ParashaRimGhostBlock;
 import com.antonkuzmn1.xqwkeburenochekprison.blocks.prison_door.PrisonDoorBlock;
 import com.antonkuzmn1.xqwkeburenochekprison.blocks.prison_door.PrisonDoorGhostBlock;
+import com.antonkuzmn1.xqwkeburenochekprison.blocks.prison_lamp.PrisonLampBlock;
 import com.antonkuzmn1.xqwkeburenochekprison.blocks.table.TableBehindGhostBlock;
 import com.antonkuzmn1.xqwkeburenochekprison.blocks.table.TableBehindRightGhostBlock;
 import com.antonkuzmn1.xqwkeburenochekprison.blocks.table.TableBlock;
@@ -82,5 +83,10 @@ public class ModBlocks {
     public static final RegistryObject<PrisonDoorGhostBlock> PRISON_DOOR_GHOST = BLOCKS.register(
             "prison_door_ghost",
             PrisonDoorGhostBlock::new
+    );
+
+    public static final RegistryObject<PrisonLampBlock> PRISON_LAMP = BLOCKS.register(
+            "prison_lamp",
+            PrisonLampBlock::new
     );
 }

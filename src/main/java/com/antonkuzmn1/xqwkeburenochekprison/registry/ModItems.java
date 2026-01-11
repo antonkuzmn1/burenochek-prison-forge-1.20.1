@@ -37,4 +37,9 @@ public class ModItems {
             "prison_door",
             PrisonDoorItem::new
     );
+
+    public static final RegistryObject<PrisonLampItem> PRISON_LAMP = ITEMS.register(
+            "prison_lamp",
+            PrisonLampItem::new
+    );
 }

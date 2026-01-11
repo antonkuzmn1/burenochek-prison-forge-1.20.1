@@ -52,4 +52,12 @@ public class ModBlockEntities {
                     ModBlocks.PRISON_DOOR.get()
             ).build(null)
     );
+
+    public static final RegistryObject<BlockEntityType<PrisonLampBlockEntity>> PRISON_LAMP = BLOCK_ENTITIES.register(
+            "prison_lamp",
+            () -> BlockEntityType.Builder.of(
+                    PrisonLampBlockEntity::new,
+                    ModBlocks.PRISON_LAMP.get()
+            ).build(null)
+    );
 }

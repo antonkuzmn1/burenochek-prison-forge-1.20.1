@@ -37,6 +37,10 @@ public class ClientModEvents {
                 ModBlockEntities.PRISON_DOOR.get(),
                 ctx -> new PrisonDoorBlockRenderer()
         );
+        event.registerBlockEntityRenderer(
+                ModBlockEntities.PRISON_LAMP.get(),
+                ctx -> new PrisonLampBlockRenderer()
+        );
     }
 
     @SubscribeEvent
