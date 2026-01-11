@@ -60,4 +60,12 @@ public class ModBlockEntities {
                     ModBlocks.PRISON_LAMP.get()
             ).build(null)
     );
+
+    public static final RegistryObject<BlockEntityType<ShowerBlockEntity>> SHOWER = BLOCK_ENTITIES.register(
+            "shower",
+            () -> BlockEntityType.Builder.of(
+                    ShowerBlockEntity::new,
+                    ModBlocks.SHOWER.get()
+            ).build(null)
+    );
 }

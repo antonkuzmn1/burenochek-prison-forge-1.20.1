@@ -41,6 +41,10 @@ public class ClientModEvents {
                 ModBlockEntities.PRISON_LAMP.get(),
                 ctx -> new PrisonLampBlockRenderer()
         );
+        event.registerBlockEntityRenderer(
+                ModBlockEntities.SHOWER.get(),
+                ctx -> new ShowerBlockRenderer()
+        );
     }
 
     @SubscribeEvent

@@ -42,4 +42,9 @@ public class ModItems {
             "prison_lamp",
             PrisonLampItem::new
     );
+
+    public static final RegistryObject<ShowerItem> SHOWER = ITEMS.register(
+            "shower",
+            ShowerItem::new
+    );
 }

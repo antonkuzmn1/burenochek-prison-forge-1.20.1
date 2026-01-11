@@ -1,0 +1,6 @@
+{
+  "parent": "xqwkeburenochekprison:block/shower",
+  "textures": {
+    "particle": "xqwkeburenochekprison:block/shower"
+  }
+}
