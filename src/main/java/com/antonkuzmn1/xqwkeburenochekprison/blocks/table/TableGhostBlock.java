@@ -4,8 +4,11 @@ import com.antonkuzmn1.xqwkeburenochekprison.registry.ModBlocks;
 import com.antonkuzmn1.xqwkeburenochekprison.utils.VoxelShapeUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -19,6 +22,7 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -33,24 +37,45 @@ public class TableGhostBlock extends Block implements SimpleWaterloggedBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final EnumProperty<TableBlockPart> PART = EnumProperty.create("part", TableBlockPart.class);
 
-    protected final Map<Direction, VoxelShape> shapes = new EnumMap<>(Direction.class);
+    public static final BooleanProperty CHAIR = BooleanProperty.create("chair");
 
-    public TableGhostBlock(TableBlockPart part, VoxelShape shapeNorth) {
+    protected final Map<Direction, VoxelShape> shapes = new EnumMap<>(Direction.class);
+    protected final Map<Direction, VoxelShape> shapesWithChair = new EnumMap<>(Direction.class);
+
+    public TableGhostBlock(TableBlockPart part, VoxelShape shapeNorth, VoxelShape shapesNorthWithChair) {
         super(Properties.of()
-                        .strength(2.0f, 6.0f)
-                        .noOcclusion()
+                .strength(2.0f, 6.0f)
+                .noOcclusion()
         );
 
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(FACING, Direction.NORTH)
                 .setValue(PART, part)
                 .setValue(WATERLOGGED, false)
+                .setValue(CHAIR, false)
         );
 
         shapes.put(Direction.NORTH, shapeNorth);
         shapes.put(Direction.EAST, VoxelShapeUtils.rotate(Direction.NORTH, Direction.EAST, shapeNorth));
         shapes.put(Direction.SOUTH, VoxelShapeUtils.rotate(Direction.NORTH, Direction.SOUTH, shapeNorth));
         shapes.put(Direction.WEST, VoxelShapeUtils.rotate(Direction.NORTH, Direction.WEST, shapeNorth));
+
+        shapesWithChair.put(Direction.NORTH, shapesNorthWithChair);
+        shapesWithChair.put(
+                Direction.EAST,
+                VoxelShapeUtils.rotate(Direction.NORTH, Direction.EAST, shapesNorthWithChair));
+        shapesWithChair.put(
+                Direction.SOUTH,
+                VoxelShapeUtils.rotate(Direction.NORTH, Direction.SOUTH, shapesNorthWithChair)
+        );
+        shapesWithChair.put(
+                Direction.WEST,
+                VoxelShapeUtils.rotate(Direction.NORTH, Direction.WEST, shapesNorthWithChair)
+        );
+    }
+
+    public TableGhostBlock(TableBlockPart part, VoxelShape shapeNorth) {
+        this(part, shapeNorth, shapeNorth);
     }
 
     @Override
@@ -60,7 +85,7 @@ public class TableGhostBlock extends Block implements SimpleWaterloggedBlock {
             @NotNull BlockPos pos,
             @NotNull CollisionContext context
     ) {
-        return this.shapes.get(state.getValue(FACING));
+        return getShapes(state).get(state.getValue(FACING));
     }
 
     @Override
@@ -78,10 +103,14 @@ public class TableGhostBlock extends Block implements SimpleWaterloggedBlock {
         int facingCWZ = facingCW.getStepZ();
         TableBlockPart part = state.getValue(PART);
 
-        VoxelShape baseShape = TableBlock.SHAPES.get(facing);
-        VoxelShape behindShape = ModBlocks.TABLE_BEHIND_GHOST.get().getShapeForFacing(facing);
-        VoxelShape rightShape = ModBlocks.TABLE_RIGHT_GHOST.get().getShapeForFacing(facing);
-        VoxelShape behindRightShape = ModBlocks.TABLE_BEHIND_RIGHT_GHOST.get().getShapeForFacing(facing);
+        boolean chair = state.getValue(CHAIR);
+
+        Map<Direction, VoxelShape> baseShapes = chair ? TableBlock.SHAPES_WITH_CHAIR : TableBlock.SHAPES;
+
+        VoxelShape baseShape = baseShapes.get(facing);
+        VoxelShape behindShape = ModBlocks.TABLE_BEHIND_GHOST.get().getShapeForFacing(facing, chair);
+        VoxelShape rightShape = ModBlocks.TABLE_RIGHT_GHOST.get().getShapeForFacing(facing, chair);
+        VoxelShape behindRightShape = ModBlocks.TABLE_BEHIND_RIGHT_GHOST.get().getShapeForFacing(facing, chair);
 
         if (part == TableBlockPart.BEHIND) {
             baseShape = baseShape.move(facingX, 0, facingZ);
@@ -161,18 +190,56 @@ public class TableGhostBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     @Override
+    public @NotNull InteractionResult use(
+            @NotNull BlockState state,
+            @NotNull Level level,
+            @NotNull BlockPos pos,
+            @NotNull Player player,
+            @NotNull InteractionHand hand,
+            @NotNull BlockHitResult hit
+    ) {
+        ItemStack stack = player.getItemInHand(hand);
+
+        if (stack.is(ModBlocks.CHAIR.get().asItem()) && !state.getValue(CHAIR)) {
+            if (!level.isClientSide) {
+                Direction facing = state.getValue(FACING);
+                Direction left = facing.getClockWise();
+
+                TableBlockPart part = state.getValue(PART);
+                BlockPos basePos = switch (part) {
+                    case BEHIND -> pos.relative(facing);
+                    case RIGHT -> pos.relative(left);
+                    case BEHIND_RIGHT -> pos.relative(facing).relative(left);
+                };
+
+                BlockState mainState = level.getBlockState(basePos);
+                if (mainState.getBlock() instanceof TableBlock tableBlock) {
+                    return tableBlock.use(mainState, level, basePos, player, hand, hit);
+                }
+            }
+            return InteractionResult.SUCCESS;
+        }
+
+        return InteractionResult.PASS;
+    }
+
+    @Override
     public @NotNull FluidState getFluidState(BlockState state) {
         return state.getValue(WATERLOGGED)
                 ? Fluids.WATER.getSource(false)
                 : super.getFluidState(state);
     }
 
-    public VoxelShape getShapeForFacing(Direction facing) {
-        return shapes.get(facing);
+    public VoxelShape getShapeForFacing(Direction facing, boolean chair) {
+        return (chair ? shapesWithChair : shapes).get(facing);
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING, PART, WATERLOGGED);
+        builder.add(FACING, PART, WATERLOGGED, CHAIR);
+    }
+
+    private Map<Direction, VoxelShape> getShapes(@NotNull BlockState state) {
+        return state.getValue(CHAIR) ? shapesWithChair : shapes;
     }
 }
