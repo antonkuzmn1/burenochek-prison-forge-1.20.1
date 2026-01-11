@@ -37,8 +37,27 @@ public class PrisonLampBlock extends Block implements EntityBlock {
 
     private static final VoxelShape SHAPE_NORTH = Shapes.or(
             Shapes.box(
-                    5 / 16f, 0 / 16f, 4 / 16f,
-                    12 / 16f, 16 / 16f, 11 / 16f
+                    6 / 16f, 1 / 16f, 5 / 16f,
+                    11 / 16f, 6 / 16f, 10 / 16f
+            ),
+
+            Shapes.box(
+                    7 / 16f, 6 / 16f, 6 / 16f,
+                    10 / 16f, 11 / 16f, 9 / 16f
+            ),
+
+            Shapes.box(
+                    6 / 16f, 7 / 16f, 5 / 16f,
+                    11 / 16f, 8 / 16f, 10 / 16f
+            ),
+            Shapes.box(
+                    6 / 16f, 9 / 16f, 5 / 16f,
+                    11 / 16f, 10 / 16f, 10 / 16f
+            ),
+
+            Shapes.box(
+                    8 / 16f, 11 / 16f, 7 / 16f,
+                    9 / 16f, 16 / 16f, 8 / 16f
             )
     );
 
