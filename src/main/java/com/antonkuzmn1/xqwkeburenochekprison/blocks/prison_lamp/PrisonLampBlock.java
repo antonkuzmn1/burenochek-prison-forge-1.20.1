@@ -4,7 +4,10 @@ import com.antonkuzmn1.xqwkeburenochekprison.blockentities.PrisonLampBlockEntity
 import com.antonkuzmn1.xqwkeburenochekprison.utils.VoxelShapeUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -15,6 +18,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -27,6 +32,8 @@ import java.util.Map;
 @SuppressWarnings("deprecation")
 public class PrisonLampBlock extends Block implements EntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+
+    public static final IntegerProperty LIGHT = IntegerProperty.create("light", 0, 2);
 
     private static final VoxelShape SHAPE_NORTH = Shapes.or(
             Shapes.box(
@@ -49,6 +56,7 @@ public class PrisonLampBlock extends Block implements EntityBlock {
         this.registerDefaultState(
                 this.stateDefinition.any()
                         .setValue(FACING, Direction.NORTH)
+                        .setValue(LIGHT, 0)
         );
     }
 
@@ -84,7 +92,7 @@ public class PrisonLampBlock extends Block implements EntityBlock {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING);
+        builder.add(FACING, LIGHT);
     }
 
     @Override
@@ -123,5 +131,35 @@ public class PrisonLampBlock extends Block implements EntityBlock {
             boolean isMoving
     ) {
         super.onRemove(state, level, pos, newState, isMoving);
+    }
+
+    @Override
+    public @NotNull InteractionResult use(
+            @NotNull BlockState state,
+            @NotNull Level level,
+            @NotNull BlockPos pos,
+            @NotNull Player player,
+            @NotNull InteractionHand hand,
+            @NotNull BlockHitResult hit
+    ) {
+        if (player.isShiftKeyDown()) {
+            if (level.isClientSide) return InteractionResult.SUCCESS;
+
+            int next = (state.getValue(LIGHT) + 1) % 3;
+            level.setBlock(pos, state.setValue(LIGHT, next), Block.UPDATE_ALL);
+
+            return InteractionResult.CONSUME;
+        }
+
+        return InteractionResult.PASS;
+    }
+
+    @Override
+    public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
+        return switch (state.getValue(LIGHT)) {
+            case 1 -> 7;
+            case 2 -> 12;
+            default -> 0;
+        };
     }
 }
