@@ -22,6 +22,7 @@ public class ModCreativeTabs {
                         output.accept(ModItems.PARASHA.get());
                         output.accept(ModItems.TABLE.get());
                         output.accept(ModItems.CHAIR.get());
+                        output.accept(ModItems.FOLDING_BED.get());
                     })
                     .build()
     );

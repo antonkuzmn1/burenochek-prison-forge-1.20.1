@@ -63,7 +63,8 @@ public class TableGhostBlock extends Block implements SimpleWaterloggedBlock {
         shapesWithChair.put(Direction.NORTH, shapesNorthWithChair);
         shapesWithChair.put(
                 Direction.EAST,
-                VoxelShapeUtils.rotate(Direction.NORTH, Direction.EAST, shapesNorthWithChair));
+                VoxelShapeUtils.rotate(Direction.NORTH, Direction.EAST, shapesNorthWithChair)
+        );
         shapesWithChair.put(
                 Direction.SOUTH,
                 VoxelShapeUtils.rotate(Direction.NORTH, Direction.SOUTH, shapesNorthWithChair)
@@ -142,7 +143,6 @@ public class TableGhostBlock extends Block implements SimpleWaterloggedBlock {
     ) {
         return true;
     }
-
 
     @Override
     public void onRemove(

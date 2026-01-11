@@ -1,6 +1,7 @@
 package com.antonkuzmn1.xqwkeburenochekprison.registry;
 
 import com.antonkuzmn1.xqwkeburenochekprison.XqwkeBurenochekPrisonMod;
+import com.antonkuzmn1.xqwkeburenochekprison.blockentities.FoldingBedBlockEntity;
 import com.antonkuzmn1.xqwkeburenochekprison.blockentities.ChairBlockEntity;
 import com.antonkuzmn1.xqwkeburenochekprison.blockentities.ParashaBlockEntity;
 import com.antonkuzmn1.xqwkeburenochekprison.blockentities.TableBlockEntity;
@@ -36,6 +37,14 @@ public class ModBlockEntities {
             () -> BlockEntityType.Builder.of(
                     ChairBlockEntity::new,
                     ModBlocks.CHAIR.get()
+            ).build(null)
+    );
+
+    public static final RegistryObject<BlockEntityType<FoldingBedBlockEntity>> FOLDING_BED = BLOCK_ENTITIES.register(
+            "folding_bed",
+            () -> BlockEntityType.Builder.of(
+                    FoldingBedBlockEntity::new,
+                    ModBlocks.FOLDING_BED.get()
             ).build(null)
     );
 }

@@ -1,0 +1,6 @@
+{
+  "parent": "xqwkeburenochekprison:block/folding_bed_ghost",
+  "textures": {
+    "particle": "xqwkeburenochekprison:block/folding_bed"
+  }
+}

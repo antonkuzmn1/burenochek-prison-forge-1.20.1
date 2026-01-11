@@ -1,6 +1,7 @@
 package com.antonkuzmn1.xqwkeburenochekprison.registry;
 
 import com.antonkuzmn1.xqwkeburenochekprison.XqwkeBurenochekPrisonMod;
+import com.antonkuzmn1.xqwkeburenochekprison.items.FoldingBedItem;
 import com.antonkuzmn1.xqwkeburenochekprison.items.ChairItem;
 import com.antonkuzmn1.xqwkeburenochekprison.items.ParashaItem;
 import com.antonkuzmn1.xqwkeburenochekprison.items.TableItem;
@@ -28,5 +29,10 @@ public class ModItems {
     public static final RegistryObject<ChairItem> CHAIR = ITEMS.register(
             "chair",
             ChairItem::new
+    );
+
+    public static final RegistryObject<FoldingBedItem> FOLDING_BED = ITEMS.register(
+            "folding_bed",
+            FoldingBedItem::new
     );
 }
