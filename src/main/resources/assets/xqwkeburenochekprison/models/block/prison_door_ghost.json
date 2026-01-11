@@ -1,0 +1,6 @@
+{
+  "parent": "xqwkeburenochekprison:block/prison_door_ghost",
+  "textures": {
+    "particle": "xqwkeburenochekprison:block/prison_door"
+  }
+}

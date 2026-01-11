@@ -1,10 +1,7 @@
 package com.antonkuzmn1.xqwkeburenochekprison.registry;
 
 import com.antonkuzmn1.xqwkeburenochekprison.XqwkeBurenochekPrisonMod;
-import com.antonkuzmn1.xqwkeburenochekprison.blockentities.FoldingBedBlockEntity;
-import com.antonkuzmn1.xqwkeburenochekprison.blockentities.ChairBlockEntity;
-import com.antonkuzmn1.xqwkeburenochekprison.blockentities.ParashaBlockEntity;
-import com.antonkuzmn1.xqwkeburenochekprison.blockentities.TableBlockEntity;
+import com.antonkuzmn1.xqwkeburenochekprison.blockentities.*;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -45,6 +42,14 @@ public class ModBlockEntities {
             () -> BlockEntityType.Builder.of(
                     FoldingBedBlockEntity::new,
                     ModBlocks.FOLDING_BED.get()
+            ).build(null)
+    );
+
+    public static final RegistryObject<BlockEntityType<PrisonDoorBlockEntity>> PRISON_DOOR = BLOCK_ENTITIES.register(
+            "prison_door",
+            () -> BlockEntityType.Builder.of(
+                    PrisonDoorBlockEntity::new,
+                    ModBlocks.PRISON_DOOR.get()
             ).build(null)
     );
 }

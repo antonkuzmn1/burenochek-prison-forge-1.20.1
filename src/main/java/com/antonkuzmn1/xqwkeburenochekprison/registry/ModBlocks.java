@@ -7,6 +7,8 @@ import com.antonkuzmn1.xqwkeburenochekprison.blocks.chair.ChairBlock;
 import com.antonkuzmn1.xqwkeburenochekprison.blocks.parasha.ParashaBlock;
 import com.antonkuzmn1.xqwkeburenochekprison.blocks.parasha.ParashaCisternGhostBlock;
 import com.antonkuzmn1.xqwkeburenochekprison.blocks.parasha.ParashaRimGhostBlock;
+import com.antonkuzmn1.xqwkeburenochekprison.blocks.prison_door.PrisonDoorBlock;
+import com.antonkuzmn1.xqwkeburenochekprison.blocks.prison_door.PrisonDoorGhostBlock;
 import com.antonkuzmn1.xqwkeburenochekprison.blocks.table.TableBehindGhostBlock;
 import com.antonkuzmn1.xqwkeburenochekprison.blocks.table.TableBehindRightGhostBlock;
 import com.antonkuzmn1.xqwkeburenochekprison.blocks.table.TableBlock;
@@ -70,5 +72,15 @@ public class ModBlocks {
     public static final RegistryObject<FoldingBedGhostBlock> FOLDING_BED_GHOST = BLOCKS.register(
             "folding_bed_ghost",
             FoldingBedGhostBlock::new
+    );
+
+    public static final RegistryObject<PrisonDoorBlock> PRISON_DOOR = BLOCKS.register(
+            "prison_door",
+            PrisonDoorBlock::new
+    );
+
+    public static final RegistryObject<PrisonDoorGhostBlock> PRISON_DOOR_GHOST = BLOCKS.register(
+            "prison_door_ghost",
+            PrisonDoorGhostBlock::new
     );
 }

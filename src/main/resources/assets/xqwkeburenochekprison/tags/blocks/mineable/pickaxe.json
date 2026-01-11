@@ -8,6 +8,8 @@
     "xqwkeburenochekprison:table_behind_ghost",
     "xqwkeburenochekprison:table_right_ghost",
     "xqwkeburenochekprison:table_behind_right_ghost",
-    "xqwkeburenochekprison:chair"
+    "xqwkeburenochekprison:chair",
+    "xqwkeburenochekprison:prison_door",
+    "xqwkeburenochekprison:prison_door_ghost"
   ]
 }

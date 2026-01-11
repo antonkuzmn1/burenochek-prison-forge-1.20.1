@@ -1,10 +1,7 @@
 package com.antonkuzmn1.xqwkeburenochekprison.registry;
 
 import com.antonkuzmn1.xqwkeburenochekprison.XqwkeBurenochekPrisonMod;
-import com.antonkuzmn1.xqwkeburenochekprison.items.FoldingBedItem;
-import com.antonkuzmn1.xqwkeburenochekprison.items.ChairItem;
-import com.antonkuzmn1.xqwkeburenochekprison.items.ParashaItem;
-import com.antonkuzmn1.xqwkeburenochekprison.items.TableItem;
+import com.antonkuzmn1.xqwkeburenochekprison.items.*;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -34,5 +31,10 @@ public class ModItems {
     public static final RegistryObject<FoldingBedItem> FOLDING_BED = ITEMS.register(
             "folding_bed",
             FoldingBedItem::new
+    );
+
+    public static final RegistryObject<PrisonDoorItem> PRISON_DOOR = ITEMS.register(
+            "prison_door",
+            PrisonDoorItem::new
     );
 }

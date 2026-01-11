@@ -23,6 +23,7 @@ public class ModCreativeTabs {
                         output.accept(ModItems.TABLE.get());
                         output.accept(ModItems.CHAIR.get());
                         output.accept(ModItems.FOLDING_BED.get());
+                        output.accept(ModItems.PRISON_DOOR.get());
                     })
                     .build()
     );
