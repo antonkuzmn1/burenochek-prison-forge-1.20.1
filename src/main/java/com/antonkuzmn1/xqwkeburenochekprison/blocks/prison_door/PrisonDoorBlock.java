@@ -5,7 +5,12 @@ import com.antonkuzmn1.xqwkeburenochekprison.registry.ModBlocks;
 import com.antonkuzmn1.xqwkeburenochekprison.utils.VoxelShapeUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -15,8 +20,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -30,6 +36,9 @@ import java.util.Map;
 public class PrisonDoorBlock extends Block implements EntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
+    public static final BooleanProperty OPENED = BooleanProperty.create("opened");
+    public static final BooleanProperty SHUTTER = BooleanProperty.create("shutter");
+
     private static final VoxelShape SHAPE_NORTH = Shapes.or(
             Shapes.box(
                     0 / 16f, 0 / 16f, 0 / 16f,
@@ -37,24 +46,46 @@ public class PrisonDoorBlock extends Block implements EntityBlock {
             )
     );
 
+    private static final VoxelShape SHAPE_NORTH_OPENED = Shapes.or(
+            Shapes.box(
+                    10 / 16f, 0 / 16f, 0 / 16f,
+                    16 / 16f, 16 / 16f, 16 / 16f
+            )
+    );
+
     public static final Map<Direction, VoxelShape> SHAPES = new EnumMap<>(Direction.class);
+    public static final Map<Direction, VoxelShape> SHAPES_OPENED = new EnumMap<>(Direction.class);
 
     static {
         SHAPES.put(Direction.NORTH, SHAPE_NORTH);
         SHAPES.put(Direction.EAST, VoxelShapeUtils.rotate(Direction.NORTH, Direction.EAST, SHAPE_NORTH));
         SHAPES.put(Direction.SOUTH, VoxelShapeUtils.rotate(Direction.NORTH, Direction.SOUTH, SHAPE_NORTH));
         SHAPES.put(Direction.WEST, VoxelShapeUtils.rotate(Direction.NORTH, Direction.WEST, SHAPE_NORTH));
+
+        SHAPES_OPENED.put(Direction.NORTH, SHAPE_NORTH_OPENED);
+        SHAPES_OPENED.put(
+                Direction.EAST,
+                VoxelShapeUtils.rotate(Direction.NORTH, Direction.EAST, SHAPE_NORTH_OPENED)
+        );
+        SHAPES_OPENED.put(
+                Direction.SOUTH,
+                VoxelShapeUtils.rotate(Direction.NORTH, Direction.SOUTH, SHAPE_NORTH_OPENED)
+        );
+        SHAPES_OPENED.put(
+                Direction.WEST,
+                VoxelShapeUtils.rotate(Direction.NORTH, Direction.WEST, SHAPE_NORTH_OPENED)
+        );
     }
 
     public PrisonDoorBlock() {
         super(Properties.of()
                 .strength(2.0f, 6.0f)
-//                .requiresCorrectToolForDrops()
                 .noOcclusion()
         );
-        this.registerDefaultState(
-                this.stateDefinition.any()
-                        .setValue(FACING, Direction.NORTH)
+        this.registerDefaultState(this.stateDefinition.any()
+                .setValue(FACING, Direction.NORTH)
+                .setValue(OPENED, false)
+                .setValue(SHUTTER, false)
         );
     }
 
@@ -76,9 +107,10 @@ public class PrisonDoorBlock extends Block implements EntityBlock {
             @NotNull CollisionContext context
     ) {
         Direction facing = state.getValue(FACING);
+        boolean opened = state.getValue(OPENED);
 
-        VoxelShape baseShape = PrisonDoorBlock.SHAPES.get(facing);
-        VoxelShape ghostShape = ModBlocks.PRISON_DOOR_GHOST.get().getShapeForFacing(facing).move(
+        VoxelShape baseShape = getShapes(state).get(facing);
+        VoxelShape ghostShape = ModBlocks.PRISON_DOOR_GHOST.get().getShapeForFacing(facing, opened).move(
                 0,
                 1,
                 0
@@ -94,12 +126,12 @@ public class PrisonDoorBlock extends Block implements EntityBlock {
             @NotNull BlockPos pos,
             @NotNull CollisionContext context
     ) {
-        return SHAPES.get(state.getValue(FACING));
+        return getShapes(state).get(state.getValue(FACING));
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING);
+        builder.add(FACING, OPENED, SHUTTER);
     }
 
     @Override
@@ -166,5 +198,85 @@ public class PrisonDoorBlock extends Block implements EntityBlock {
         }
 
         super.onRemove(state, level, pos, newState, isMoving);
+    }
+
+    @Override
+    public @NotNull InteractionResult use(
+            @NotNull BlockState state,
+            @NotNull Level level,
+            @NotNull BlockPos pos,
+            @NotNull Player player,
+            @NotNull InteractionHand hand,
+            @NotNull BlockHitResult hit
+    ) {
+        if (!level.isClientSide) {
+            if (player.isShiftKeyDown()) {
+                setShutter(level, pos, !state.getValue(SHUTTER));
+            } else {
+                setOpened(level, pos, !state.getValue(OPENED));
+            }
+        }
+        return InteractionResult.SUCCESS;
+    }
+
+    public void setOpened(
+            @NotNull Level level,
+            @NotNull BlockPos pos,
+            boolean value
+    ) {
+        if (level.isClientSide) return;
+
+        BlockState state = level.getBlockState(pos);
+
+        if (state.getBlock() instanceof PrisonDoorBlock) {
+            level.setBlock(pos, state.setValue(OPENED, value), Block.UPDATE_ALL);
+        }
+
+        BlockPos ghostPos = pos.above();
+        BlockState ghostState = level.getBlockState(ghostPos);
+        if (ghostState.getBlock() instanceof PrisonDoorGhostBlock) {
+            level.setBlock(
+                    ghostPos,
+                    ghostState.setValue(PrisonDoorGhostBlock.OPENED, value),
+                    Block.UPDATE_ALL
+            );
+        }
+
+        level.playSound(
+                null,
+                pos,
+                value ? SoundEvents.IRON_DOOR_OPEN : SoundEvents.IRON_DOOR_CLOSE,
+                SoundSource.BLOCKS,
+                1.0f,
+                1.0f
+        );
+    }
+
+    public void setShutter(
+            @NotNull Level level,
+            @NotNull BlockPos pos,
+            boolean value
+    ) {
+        if (level.isClientSide) return;
+
+        BlockState state = level.getBlockState(pos);
+
+        if (state.getBlock() instanceof PrisonDoorBlock) {
+            level.setBlock(pos, state.setValue(SHUTTER, value), Block.UPDATE_ALL);
+        }
+
+        BlockPos ghostPos = pos.above();
+        BlockState ghostState = level.getBlockState(ghostPos);
+        if (ghostState.getBlock() instanceof PrisonDoorGhostBlock) {
+            level.setBlock(
+                    ghostPos,
+                    ghostState.setValue(PrisonDoorGhostBlock.SHUTTER, value),
+                    Block.UPDATE_ALL
+            );
+        }
+    }
+
+    private Map<Direction, VoxelShape> getShapes(@NotNull BlockState state) {
+        return state.getValue(OPENED) ? SHAPES_OPENED : SHAPES;
     }
 }
