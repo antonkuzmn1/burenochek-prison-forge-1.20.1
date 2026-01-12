@@ -38,17 +38,50 @@ public class FoldingBedGhostBlock extends Block {
 
     public static final BooleanProperty FOLDED = BooleanProperty.create("folded");
 
-    private static final VoxelShape SHAPE_NORTH = Shapes.or(box(3, 4, 0, 15, 5, 15), box(2, 2, 0, 3, 4, 14), box(15, 2, 0, 16, 4, 14), box(4, 2, 15, 14, 4, 16), box(14, 2, 14, 16, 6, 16), box(2, 2, 14, 4, 6, 16), box(4, 5, 7, 14, 6, 14), box(0, 3, 12, 2, 16, 15),
-            box(15, 1, -1, 16, 2, 0), box(15, 1, 0, 16, 2, 2), box(3, 0, -1, 15, 1, 0), box(3, 0, 0, 15, 1, 2), box(2, 1, -1, 8, 2, 0), box(2, 1, 0, 8, 2, 2), box(3, 1, -1, 8, 2, 2), box(2, 1, 12, 3, 2, 15), box(1, 2, 12, 2, 3, 15),
-            box(3, 0, 12, 15, 1, 15), box(15, 1, 12, 16, 2, 15));
+    private static final VoxelShape SHAPE_NORTH = Shapes.or(
+            box(3, 4, 0, 15, 5, 15),
+            box(2, 2, 0, 3, 4, 14),
+            box(15, 2, 0, 16, 4, 14),
+            box(4, 2, 15, 14, 4, 16),
+            box(14, 2, 14, 16, 6, 16),
+            box(3, 1, 0, 15, 2, 15),
+            box(2, 2, 14, 4, 6, 16),
+            box(4, 5, 7, 14, 6, 14),
+            box(0, 3, 12, 2, 16, 15),
+            box(15, 1, -1, 16, 2, 0),
+            box(15, 1, 0, 16, 2, 2),
+            box(3, 0, -1, 15, 1, 0),
+            box(3, 0, 0, 15, 1, 2),
+            box(2, 1, -1, 8, 2, 0),
+            box(2, 1, 0, 8, 2, 2),
+            box(3, 1, -1, 8, 2, 2),
+            box(2, 1, 12, 3, 2, 15),
+            box(1, 2, 12, 2, 3, 15),
+            box(3, 0, 12, 15, 1, 15),
+            box(15, 1, 12, 16, 2, 15)
+    );
 
 
     private static final VoxelShape SHAPE_NORTH_FOLDED = Shapes.or(
-            SHAPE_NORTH,
-            Shapes.box(
-                    0 / 16f, 0 / 16f, 0 / 16f,
-                    16 / 16f, 9 / 16f, 16 / 16f
-            ) // TODO HITBOX REQUIRED
+            box(6, 2, 0, 7, 3, 2),
+            box(7, 3, 0, 8, 15, 2),
+            box(6, 15, 0, 7, 16, 2),
+
+            box(5, 1, 12, 6, 2, 15),
+            box(6, 2, 12, 7, 3, 15),
+            box(7, 3, 12, 8, 15, 15),
+            box(6, 15, 12, 7, 16, 15),
+
+            box(6, 3, 0, 7, 15, 15),
+            box(4, 2, 0, 6, 16, 16),
+
+            box(3, 3, 0, 4, 15, 14),
+            box(2, 4, 7, 3, 14, 14),
+
+            box(2, 2, 14, 6, 4, 16),
+            box(2, 14, 14, 6, 16, 16),
+
+            box(0, 2, 12, 2, 15, 15)
     );
 
     private final Map<Direction, VoxelShape> SHAPES = new EnumMap<>(Direction.class);
@@ -173,6 +206,19 @@ public class FoldingBedGhostBlock extends Block {
         }
 
         return InteractionResult.PASS;
+    }
+
+    @Override
+    public void onPlace(
+            @NotNull BlockState state,
+            Level level,
+            @NotNull BlockPos pos,
+            @NotNull BlockState oldState,
+            boolean isMoving
+    ) {
+        if (!level.isClientSide && level instanceof ServerLevel serverLevel) {
+            serverLevel.scheduleTick(pos, this, 20);
+        }
     }
 
     @Override
