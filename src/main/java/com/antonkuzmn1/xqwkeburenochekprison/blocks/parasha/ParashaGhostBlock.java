@@ -213,8 +213,6 @@ public class ParashaGhostBlock extends Block implements SimpleWaterloggedBlock {
                 ParashaBlockEntity.playFlushAnimation(mainPos);
             }
 
-            System.out.println(storage.getItems());
-
             boolean allAir = storage.getItems().stream().allMatch(ItemStack::isEmpty);
 
             if (allAir) {
@@ -230,7 +228,6 @@ public class ParashaGhostBlock extends Block implements SimpleWaterloggedBlock {
                         )
                 );
 
-                System.out.println(items);
                 if (items.isEmpty()) return InteractionResult.PASS;
 
                 List<ItemEntity> stacks = items.stream().toList();
@@ -239,8 +236,6 @@ public class ParashaGhostBlock extends Block implements SimpleWaterloggedBlock {
                     storage.getItems().set(i, item.getItem().copy());
                     item.discard();
                 }
-
-                System.out.println(storage.getItems());
 
                 storage.setDirty();
             } else {
