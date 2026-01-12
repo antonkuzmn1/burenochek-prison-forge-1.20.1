@@ -10,8 +10,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -37,6 +37,7 @@ import java.util.Map;
 @SuppressWarnings("deprecation")
 public class FoldingBedBlock extends Block implements EntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+    public static final BooleanProperty OCCUPIED = BlockStateProperties.OCCUPIED;
 
     public static final BooleanProperty FOLDED = BooleanProperty.create("folded");
 
@@ -72,6 +73,7 @@ public class FoldingBedBlock extends Block implements EntityBlock {
                 this.stateDefinition.any()
                         .setValue(FACING, Direction.NORTH)
                         .setValue(FOLDED, false)
+                        .setValue(OCCUPIED, false)
         );
     }
 
@@ -117,7 +119,7 @@ public class FoldingBedBlock extends Block implements EntityBlock {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING, FOLDED);
+        builder.add(FACING, FOLDED, OCCUPIED);
     }
 
     @Override
@@ -200,37 +202,14 @@ public class FoldingBedBlock extends Block implements EntityBlock {
             @NotNull BlockHitResult hit
     ) {
         if (level.isClientSide) {
-            player.setPose(Pose.SLEEPING);
-            player.teleportTo(
-                    pos.getX() + 0.5,
-                    pos.getY() + 1.8,
-                    pos.getZ() + 0.5
-            );
-
-            player.setDeltaMovement(0, 0, 0);
             return InteractionResult.SUCCESS;
         }
 
         if (player instanceof ServerPlayer serverPlayer) {
-            serverPlayer.setPose(Pose.SLEEPING);
-            serverPlayer.teleportTo(
-                    pos.getX() + 0.5,
-                    pos.getY() + 0.2,
-                    pos.getZ() + 0.5
-            );
-
-            serverPlayer.setDeltaMovement(0, 0, 0);
-            serverPlayer.startSleepInBed(pos); // TODO NOT WORKING
-
+            serverPlayer.startSleepInBed(pos);
             return InteractionResult.PASS;
         }
 
-//        var result = serverPlayer.startSleepInBed(pos);
-//        if (result.left().isPresent()) {
-//            return InteractionResult.FAIL;
-//        } else {
-//            return InteractionResult.CONSUME;
-//        }
         return InteractionResult.PASS;
     }
 
@@ -261,6 +240,17 @@ public class FoldingBedBlock extends Block implements EntityBlock {
 
         level.scheduleTick(pos, this, 20);
     }
+
+    @Override
+    public boolean isBed(
+            BlockState state,
+            BlockGetter level,
+            BlockPos pos,
+            @Nullable Entity sleeper
+    ) {
+        return true;
+    }
+
 
     private Map<Direction, VoxelShape> getShapes(@NotNull BlockState state) {
         return state.getValue(FOLDED) ? SHAPES_FOLDED : SHAPES;
