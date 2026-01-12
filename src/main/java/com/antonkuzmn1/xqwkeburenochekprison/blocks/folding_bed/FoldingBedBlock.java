@@ -6,11 +6,9 @@ import com.antonkuzmn1.xqwkeburenochekprison.utils.VoxelShapeUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -37,7 +35,6 @@ import java.util.Map;
 @SuppressWarnings("deprecation")
 public class FoldingBedBlock extends Block implements EntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
-    public static final BooleanProperty OCCUPIED = BlockStateProperties.OCCUPIED;
 
     public static final BooleanProperty FOLDED = BooleanProperty.create("folded");
 
@@ -73,7 +70,6 @@ public class FoldingBedBlock extends Block implements EntityBlock {
                 this.stateDefinition.any()
                         .setValue(FACING, Direction.NORTH)
                         .setValue(FOLDED, false)
-                        .setValue(OCCUPIED, false)
         );
     }
 
@@ -119,7 +115,7 @@ public class FoldingBedBlock extends Block implements EntityBlock {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING, FOLDED, OCCUPIED);
+        builder.add(FACING, FOLDED);
     }
 
     @Override
@@ -166,7 +162,8 @@ public class FoldingBedBlock extends Block implements EntityBlock {
         BlockState behindGhost = ModBlocks.FOLDING_BED_GHOST.get()
                 .defaultBlockState()
                 .setValue(FoldingBedGhostBlock.FACING, facing)
-                .setValue(FoldingBedGhostBlock.FOLDED, false);
+                .setValue(FoldingBedGhostBlock.FOLDED, false)
+                .setValue(FoldingBedGhostBlock.OCCUPIED, false);
 
         if (level.isEmptyBlock(gPos)) {
             level.setBlock(gPos, behindGhost, 3);
@@ -201,13 +198,15 @@ public class FoldingBedBlock extends Block implements EntityBlock {
             @NotNull InteractionHand hand,
             @NotNull BlockHitResult hit
     ) {
-        if (level.isClientSide) {
-            return InteractionResult.SUCCESS;
-        }
+        if (!level.isClientSide) {
+            Direction facing = state.getValue(FACING);
 
-        if (player instanceof ServerPlayer serverPlayer) {
-            serverPlayer.startSleepInBed(pos);
-            return InteractionResult.PASS;
+            BlockPos headPos = pos.relative(facing.getOpposite());
+
+            BlockState mainState = level.getBlockState(headPos);
+            if (mainState.getBlock() instanceof FoldingBedGhostBlock bedBlock) {
+                return bedBlock.use(mainState, level, headPos, player, hand, hit);
+            }
         }
 
         return InteractionResult.PASS;
@@ -240,17 +239,6 @@ public class FoldingBedBlock extends Block implements EntityBlock {
 
         level.scheduleTick(pos, this, 20);
     }
-
-    @Override
-    public boolean isBed(
-            BlockState state,
-            BlockGetter level,
-            BlockPos pos,
-            @Nullable Entity sleeper
-    ) {
-        return true;
-    }
-
 
     private Map<Direction, VoxelShape> getShapes(@NotNull BlockState state) {
         return state.getValue(FOLDED) ? SHAPES_FOLDED : SHAPES;

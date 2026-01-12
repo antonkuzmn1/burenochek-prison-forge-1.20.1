@@ -5,6 +5,7 @@ import com.antonkuzmn1.xqwkeburenochekprison.utils.VoxelShapeUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -12,6 +13,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
@@ -25,12 +27,14 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nullable;
 import java.util.EnumMap;
 import java.util.Map;
 
 @SuppressWarnings("deprecation")
 public class FoldingBedGhostBlock extends Block {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+    public static final BooleanProperty OCCUPIED = BlockStateProperties.OCCUPIED;
 
     public static final BooleanProperty FOLDED = BooleanProperty.create("folded");
 
@@ -61,6 +65,7 @@ public class FoldingBedGhostBlock extends Block {
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(FACING, Direction.NORTH)
                 .setValue(FOLDED, false)
+                .setValue(OCCUPIED, false)
         );
 
         VoxelShapeUtils.putAllDirections(SHAPES, SHAPE_NORTH);
@@ -160,15 +165,13 @@ public class FoldingBedGhostBlock extends Block {
             @NotNull InteractionHand hand,
             @NotNull BlockHitResult hit
     ) {
-        if (!level.isClientSide) {
-            Direction facing = state.getValue(FACING);
+        if (level.isClientSide) {
+            return InteractionResult.SUCCESS;
+        }
 
-            BlockPos basePos = pos.relative(facing);
-
-            BlockState mainState = level.getBlockState(basePos);
-            if (mainState.getBlock() instanceof FoldingBedBlock bedBlock) {
-                return bedBlock.use(mainState, level, basePos, player, hand, hit);
-            }
+        if (player instanceof ServerPlayer serverPlayer) {
+            serverPlayer.startSleepInBed(pos);
+            return InteractionResult.PASS;
         }
 
         return InteractionResult.PASS;
@@ -188,8 +191,27 @@ public class FoldingBedGhostBlock extends Block {
     }
 
     @Override
+    public boolean isBed(
+            BlockState state,
+            BlockGetter level,
+            BlockPos pos,
+            @Nullable Entity sleeper
+    ) {
+        return true;
+    }
+
+    @Override
+    public Direction getBedDirection(
+            BlockState state,
+            LevelReader level,
+            BlockPos pos
+    ) {
+        return state.getValue(FACING).getOpposite();
+    }
+
+    @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING, FOLDED);
+        builder.add(FACING, FOLDED, OCCUPIED);
     }
 
     private Map<Direction, VoxelShape> getShapes(@NotNull BlockState state) {
