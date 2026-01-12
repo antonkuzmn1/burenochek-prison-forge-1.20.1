@@ -13,5 +13,8 @@
   "item.xqwkeburenochekprison.prison_lamp": "Prison Lamp",
   "block.xqwkeburenochekprison.prison_lamp": "Prison Lamp",
   "item.xqwkeburenochekprison.shower": "Shower",
-  "block.xqwkeburenochekprison.shower": "Shower"
+  "block.xqwkeburenochekprison.shower": "Shower",
+  "item.xqwkeburenochekprison.soap": "Soap",
+  "block.xqwkeburenochekprison.soap": "Soap",
+  "hint.xqwkeburenochekprison.soap.how_to_pick_up": "Hold Shift + Right Click to pick up soap"
 }

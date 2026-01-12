@@ -12,6 +12,7 @@ import com.antonkuzmn1.xqwkeburenochekprison.blocks.prison_door.PrisonDoorGhostB
 import com.antonkuzmn1.xqwkeburenochekprison.blocks.prison_lamp.PrisonLampBlock;
 import com.antonkuzmn1.xqwkeburenochekprison.blocks.shower.ShowerBlock;
 import com.antonkuzmn1.xqwkeburenochekprison.blocks.shower.ShowerGhostBlock;
+import com.antonkuzmn1.xqwkeburenochekprison.blocks.soap.SoapBlock;
 import com.antonkuzmn1.xqwkeburenochekprison.blocks.table.TableBehindGhostBlock;
 import com.antonkuzmn1.xqwkeburenochekprison.blocks.table.TableBehindRightGhostBlock;
 import com.antonkuzmn1.xqwkeburenochekprison.blocks.table.TableBlock;
@@ -100,5 +101,10 @@ public class ModBlocks {
     public static final RegistryObject<ShowerGhostBlock> SHOWER_GHOST = BLOCKS.register(
             "shower_ghost",
             ShowerGhostBlock::new
+    );
+
+    public static final RegistryObject<SoapBlock> SOAP = BLOCKS.register(
+            "soap",
+            SoapBlock::new
     );
 }

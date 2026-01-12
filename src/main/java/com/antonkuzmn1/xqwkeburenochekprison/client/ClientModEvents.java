@@ -45,6 +45,10 @@ public class ClientModEvents {
                 ModBlockEntities.SHOWER.get(),
                 ctx -> new ShowerBlockRenderer()
         );
+        event.registerBlockEntityRenderer(
+                ModBlockEntities.SOAP.get(),
+                ctx -> new SoapBlockRenderer()
+        );
     }
 
     @SubscribeEvent

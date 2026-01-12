@@ -68,4 +68,12 @@ public class ModBlockEntities {
                     ModBlocks.SHOWER.get()
             ).build(null)
     );
+
+    public static final RegistryObject<BlockEntityType<SoapBlockEntity>> SOAP = BLOCK_ENTITIES.register(
+            "soap",
+            () -> BlockEntityType.Builder.of(
+                    SoapBlockEntity::new,
+                    ModBlocks.SOAP.get()
+            ).build(null)
+    );
 }

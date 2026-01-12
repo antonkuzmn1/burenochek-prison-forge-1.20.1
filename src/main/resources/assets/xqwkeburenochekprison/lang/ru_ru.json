@@ -13,5 +13,8 @@
   "item.xqwkeburenochekprison.prison_lamp": "Тюремная Лампа",
   "block.xqwkeburenochekprison.prison_lamp": "Тюремная Лампа",
   "item.xqwkeburenochekprison.shower": "Душ",
-  "block.xqwkeburenochekprison.shower": "Душ"
+  "block.xqwkeburenochekprison.shower": "Душ",
+  "item.xqwkeburenochekprison.soap": "Мыло",
+  "block.xqwkeburenochekprison.soap": "Мыло",
+  "hint.xqwkeburenochekprison.soap.how_to_pick_up": "Нажмите Shift + ПКМ чтобы поднять мыло"
 }

@@ -47,4 +47,9 @@ public class ModItems {
             "shower",
             ShowerItem::new
     );
+
+    public static final RegistryObject<SoapItem> SOAP = ITEMS.register(
+            "soap",
+            SoapItem::new
+    );
 }

@@ -26,6 +26,7 @@ public class ModCreativeTabs {
                         output.accept(ModItems.PRISON_DOOR.get());
                         output.accept(ModItems.PRISON_LAMP.get());
                         output.accept(ModItems.SHOWER.get());
+                        output.accept(ModItems.SOAP.get());
                     })
                     .build()
     );
