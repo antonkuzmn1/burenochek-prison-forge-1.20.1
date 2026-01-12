@@ -38,20 +38,14 @@ public class FoldingBedBlock extends Block implements EntityBlock {
 
     public static final BooleanProperty FOLDED = BooleanProperty.create("folded");
 
-    private static final VoxelShape SHAPE_NORTH = Shapes.or(
-            Shapes.box(
-                    0 / 16f, 0 / 16f, 0 / 16f,
-                    16 / 16f, 9 / 16f, 16 / 16f
-            ) // TODO HITBOX REQUIRED
-    );
+    private static final VoxelShape SHAPE_NORTH = Shapes.or(box(3, 4, 1, 15, 5, 16), box(3, 5, 2, 15, 6, 8), box(2, 2, 2, 3, 4, 16), box(15, 2, 2, 16, 4, 16), box(4, 2, 0, 14, 4, 1), box(2, 2, 0, 4, 6, 2), box(3, 1, 1, 15, 2, 16), box(0, 3, 1, 2, 16, 4), box(3, 0, 1, 15, 1, 4),
+            box(15, 1, 1, 16, 2, 4), box(2, 1, 1, 3, 2, 4), box(15, 1, 15, 16, 2, 16), box(3, 0, 15, 15, 1, 16), box(2, 1, 15, 8, 2, 16), box(1, 2, 1, 2, 3, 4));
 
-    private static final VoxelShape SHAPE_NORTH_FOLDED = Shapes.or(
-            SHAPE_NORTH,
-            Shapes.box(
-                    0 / 16f, 0 / 16f, 0 / 16f,
-                    16 / 16f, 9 / 16f, 16 / 16f
-            ) // TODO HITBOX REQUIRED
-    );
+
+    private static final VoxelShape SHAPE_NORTH_FOLDED =    Shapes.box(
+            0 / 16f, 0 / 16f, 0 / 16f,
+            16 / 16f, 9 / 16f, 16 / 16f
+    ) // TODO HITBOX REQUIRED
 
     public static final Map<Direction, VoxelShape> SHAPES = new EnumMap<>(Direction.class);
     public static final Map<Direction, VoxelShape> SHAPES_FOLDED = new EnumMap<>(Direction.class);

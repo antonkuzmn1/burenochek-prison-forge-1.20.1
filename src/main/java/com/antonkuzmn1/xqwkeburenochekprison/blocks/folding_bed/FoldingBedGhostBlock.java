@@ -38,12 +38,10 @@ public class FoldingBedGhostBlock extends Block {
 
     public static final BooleanProperty FOLDED = BooleanProperty.create("folded");
 
-    private static final VoxelShape SHAPE_NORTH = Shapes.or(
-            Shapes.box(
-                    0 / 16f, 0 / 16f, 0 / 16f,
-                    16 / 16f, 9 / 16f, 16 / 16f
-            ) // TODO HITBOX REQUIRED
-    );
+    private static final VoxelShape SHAPE_NORTH = Shapes.or(box(3, 4, 0, 15, 5, 15), box(2, 2, 0, 3, 4, 14), box(15, 2, 0, 16, 4, 14), box(4, 2, 15, 14, 4, 16), box(14, 2, 14, 16, 6, 16), box(2, 2, 14, 4, 6, 16), box(4, 5, 7, 14, 6, 14), box(0, 3, 12, 2, 16, 15),
+            box(15, 1, -1, 16, 2, 0), box(15, 1, 0, 16, 2, 2), box(3, 0, -1, 15, 1, 0), box(3, 0, 0, 15, 1, 2), box(2, 1, -1, 8, 2, 0), box(2, 1, 0, 8, 2, 2), box(3, 1, -1, 8, 2, 2), box(2, 1, 12, 3, 2, 15), box(1, 2, 12, 2, 3, 15),
+            box(3, 0, 12, 15, 1, 15), box(15, 1, 12, 16, 2, 15));
+
 
     private static final VoxelShape SHAPE_NORTH_FOLDED = Shapes.or(
             SHAPE_NORTH,
