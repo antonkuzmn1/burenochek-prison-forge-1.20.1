@@ -41,7 +41,6 @@ public class ParashaBlockEntity extends BlockEntity implements GeoBlockEntity {
     }
 
     public static void playFlushAnimation(BlockPos pos) {
-        System.out.println("playFlushAnimation");
         isPlaying.put(pos, new ParashaFlushTicker());
     }
 

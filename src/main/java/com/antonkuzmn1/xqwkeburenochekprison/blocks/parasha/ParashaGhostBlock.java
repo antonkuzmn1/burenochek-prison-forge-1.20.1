@@ -213,7 +213,11 @@ public class ParashaGhostBlock extends Block implements SimpleWaterloggedBlock {
                 ParashaBlockEntity.playFlushAnimation(mainPos);
             }
 
-            if (storage.getItems().isEmpty()) {
+            System.out.println(storage.getItems());
+
+            boolean allAir = storage.getItems().stream().allMatch(ItemStack::isEmpty);
+
+            if (allAir) {
                 List<ItemEntity> items = level.getEntitiesOfClass(
                         ItemEntity.class,
                         new AABB(
@@ -226,12 +230,17 @@ public class ParashaGhostBlock extends Block implements SimpleWaterloggedBlock {
                         )
                 );
 
+                System.out.println(items);
                 if (items.isEmpty()) return InteractionResult.PASS;
 
-                for (ItemEntity item : items) {
-                    storage.getItems().add(item.getItem().copy());
+                List<ItemEntity> stacks = items.stream().toList();
+                for (int i = 0; i < stacks.size() && i < storage.getItems().size(); i++) {
+                    ItemEntity item = stacks.get(i);
+                    storage.getItems().set(i, item.getItem().copy());
                     item.discard();
                 }
+
+                System.out.println(storage.getItems());
 
                 storage.setDirty();
             } else {

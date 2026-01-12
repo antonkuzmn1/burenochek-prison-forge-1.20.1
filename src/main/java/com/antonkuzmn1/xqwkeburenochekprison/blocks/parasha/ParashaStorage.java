@@ -11,7 +11,13 @@ import org.jetbrains.annotations.NotNull;
 public class ParashaStorage extends SavedData {
     private static final String NAME = "parasha_storage";
 
-    private final NonNullList<ItemStack> items = NonNullList.create();
+    private final NonNullList<ItemStack> items;
+
+    private static final int SIZE = 54;
+
+    public ParashaStorage() {
+        this.items = NonNullList.withSize(SIZE, ItemStack.EMPTY);
+    }
 
     public static ParashaStorage get(ServerLevel level) {
         return level.getDataStorage().computeIfAbsent(
