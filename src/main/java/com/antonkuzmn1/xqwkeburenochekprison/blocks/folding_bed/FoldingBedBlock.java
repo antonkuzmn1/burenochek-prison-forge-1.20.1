@@ -224,7 +224,7 @@ public class FoldingBedBlock extends Block implements EntityBlock {
 
             return InteractionResult.PASS;
         }
-        // АЛО ПУШИЬЬ
+
 //        var result = serverPlayer.startSleepInBed(pos);
 //        if (result.left().isPresent()) {
 //            return InteractionResult.FAIL;
